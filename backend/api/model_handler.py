@@ -81,51 +81,61 @@ class DB_Utils:
             s.close()
             return query_results.all()
 
-def store_new_trade(session,
-                    purchase_amount,
-                    purchase_currency,
-                    sale_amount,
-                    sale_currency,
-                    rate):
-    """
+    @staticmethod
+    def store_new_trade(session,
+                        purchase_amount,
+                        purchase_currency,
+                        sale_amount,
+                        sale_currency,
+                        rate):
+        """
 
-    :param session:
-    :param purchase_amount:
-    :param purchase_currency:
-    :param sale_amount:
-    :param sale_currency:
-    :return:
-    """
-    sale = ForexModels.Sale(amount=sale_amount)
-    sale.currency = DB_Utils.get_or_create(session=session,
-                                           model=ForexModels.Currency,
-                                           code=sale_currency)
-
-    purchase = ForexModels.Purchase(amount=purchase_amount)
-    purchase.currency = DB_Utils.get_or_create(session=session,
+        :param session:
+        :param purchase_amount:
+        :param purchase_currency:
+        :param sale_amount:
+        :param sale_currency:
+        :return:
+        """
+        sale = ForexModels.Sale(amount=sale_amount)
+        sale.currency = DB_Utils.get_or_create(session=session,
                                                model=ForexModels.Currency,
-                                               code=purchase_currency)
+                                               code=sale_currency)
 
-    trade = ForexModels.Trade(rate=rate, purchase=purchase, sale=sale)
+        purchase = ForexModels.Purchase(amount=purchase_amount)
+        purchase.currency = DB_Utils.get_or_create(session=session,
+                                                   model=ForexModels.Currency,
+                                                   code=purchase_currency)
 
-    session.add(trade)
-    session.commit()
-    session.close()
-    return True
+        trade = ForexModels.Trade(rate=rate, purchase=purchase, sale=sale)
 
+        session.add(trade)
+        session.commit()
+        session.close()
+        return True
 
+    @staticmethod
+    def add_test_trade(engine_uri):
+        engine = create_engine(engine_uri, echo=True)
+        s = Session(bind=engine)
+        DB_Utils.store_new_trade(session=s,
+                                 purchase_amount=4444,
+                                 purchase_currency="EUR",
+                                 sale_amount=122,
+                                 sale_currency="GBP",
+                                 rate=1.2)
 
 #engine = DB_Utils.recreate_db()
 #populate_currency_dimension(engine)
 #engine = create_engine('sqlite:///db/school.db')
 #s = Session(bind=engine)
 
-#store_new_trade(session=s,
-#                purchase_amount=4444,
-#                purchase_currency="EUR",
-#                sale_amount=122,
-#                sale_currency="GBP",
-#                rate=1.2)
+#
+#
+#
+#
+#
+#
 
 #data = get_model_data(s, "Trade")
 

@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { Button } from 'reactstrap';
+// import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import BootstrapSelect from "./dd_v2";
 
 // import converter from "./converter.css";
 
@@ -64,7 +66,7 @@ import { Button } from 'reactstrap';
     }
     // Handle change
     convertHandler = (event) => {
-
+      console.log(event.target.name)
       this.getResult()
 
       if (event.target.name === "from") {
@@ -121,13 +123,17 @@ import { Button } from 'reactstrap';
                 <option key={cur}>{cur}</option>
               ))}
             </select>
+
             <span>{this.state.result && <h3>{this.state.result}</h3>}
             </span>
             <span aria-atomic={"true"}>
-              <Button>Store trade</Button>
+              <Button color={"primary"}>Store trade</Button>
             </span>
           </div>
+          <BootstrapSelect name={"From"} onChange={event => this.convertHandler(event)} value={this.state.toCurrency}></BootstrapSelect>
+          <BootstrapSelect name={"To"} onChange={event => this.convertHandler(event)} value={this.state.toCurrency}></BootstrapSelect>
         </div>
       );
     }
-  }export default Converter;
+  }
+  export default Converter;
