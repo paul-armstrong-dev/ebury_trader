@@ -9,11 +9,13 @@ class BootstrapSelect extends React.Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.changeValue = this.changeValue.bind(this);
+        this.clickHandle = this.clickHandle.bind(this);
         this.state = {
-            currencies: [],
+            all_currencies: [],
             dropDownValue: 'Select action',
-            dropdownOpen: false
+            dropdownOpen: false,
+            rate: 0.0,
+            currency: ""
         };
     }
 
@@ -23,12 +25,11 @@ class BootstrapSelect extends React.Component {
         });
     }
 
-    changeValue(event) {
-        this.setState({dropDownValue: event.currentTarget.textContent});
+    clickHandle(event) {
         let id = event.currentTarget.getAttribute("id");
-
         let name = event.currentTarget.getAttribute("name");
         let value = event.currentTarget.getAttribute("value");
+        this.setState({dropDownValue: event.currentTarget.textContent, rate: id, currency: value })
         console.log("id-" + id);
         console.log("name-" + name);
         console.log("value-" + value);
@@ -39,7 +40,7 @@ class BootstrapSelect extends React.Component {
       axios
         .get("https://api.exchangeratesapi.io/latest")
         .then(response => {
-          this.setState({currencies: response.data.rates})
+          this.setState({all_currencies: response.data.rates})
         })
         .catch(err => {
           console.log("oppps", err);
@@ -53,10 +54,10 @@ class BootstrapSelect extends React.Component {
                     {this.state.dropDownValue}
                 </DropdownToggle>
                 <DropdownMenu>
-                    {Object.keys(this.state.currencies).map(key =><DropdownItem name={[key]}
-                                                                                key={this.state.currencies[key]}
-                                                                                value={this.state.currencies[key]}
-                                                                                onClick={this.changeValue}>{key}
+                    {Object.keys(this.state.all_currencies).map(key =><DropdownItem name={[key]}
+                                                                                key={this.state.all_currencies[key]}
+                                                                                value={this.state.all_currencies[key]}
+                                                                                onClick={this.clickHandle}>{key}
                     </DropdownItem>)}
                 </DropdownMenu>
 
