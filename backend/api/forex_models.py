@@ -8,62 +8,19 @@ Base = declarative_base()
 
 
 class ForexModels:
+    """
+         Ran into tons of issues with my 3 layer data model, figured that if I try and K.I.S.S,
+         that model likely is not necessary (there are also 2 one to one relations, which is not ideal)
+         Check commit history for data model implementation should you need to store this data over years,
+         but really didn't see the need for this
+        """
+
     @staticmethod
     def recreate_all_models(engine):
         logger.info("Recreating all models")
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
         logger.info("Models recreated")
-
-    class Currency(Base):
-        """ Only dimensional table, here so we can store as ID"""
-        __tablename__ = 'dim_currency'
-        # One to Many
-        currency_id = Column(Integer,
-                             primary_key=True,
-                             index=True,
-                             autoincrement=True)
-        description = Column(String(100), nullable=False)
-        code = Column(String(3), nullable=False, unique=True)
-
-        created_date_time = Column(DateTime(timezone=True), server_default=func.now())
-
-        def __repr__(self):
-            return '<Player %r>' % self.description + ' ' + self.code
-
-    class Sale(Base):
-        """ Fact table """
-        __tablename__ = 'fct_sales'
-
-        sale_id = Column(Integer,
-                         primary_key=True,
-                         index=True,
-                         autoincrement=True)
-
-        currency_id = Column(Integer,
-                             ForeignKey('dim_currency.currency_id'),
-                             nullable=False)
-
-        amount = Column(Float, nullable=False)
-        # One to Many
-        currency = relationship("Currency")#, uselist=True, backref="sale_br")
-        trade = relationship("Trade", back_populates="sale")
-
-    class Purchase(Base):
-        """ Fact table """
-        __tablename__ = 'fct_purchases'
-        purchase_id = Column(Integer,
-                          primary_key=True,
-                          index=True,
-                          autoincrement=True)
-        currency_id = Column(Integer,
-                             ForeignKey('dim_currency.currency_id'),
-                             nullable=False)
-        amount = Column(Float, nullable=False)
-
-        # One to Many
-        currency = relationship("Currency")
-        trade = relationship("Trade", back_populates="purchase") #, uselist=True, backref="purchase_br")
 
     class Trade(Base):
         """ Fact table """
@@ -73,16 +30,11 @@ class ForexModels:
                           index=True,
                           autoincrement=True)
 
+        sale_amount = Column(Float, nullable=False)
+        sale_currency_code = Column(String(3), nullable=False)
+        purchase_amount = Column(Float, nullable=False)
+        purchase_currency_code = Column(String(3), nullable=False)
         rate = Column(Float, nullable=True)
-
-        purchase_id = Column(Integer, ForeignKey('fct_purchases.purchase_id'))
-        sale_id = Column(Integer, ForeignKey('fct_sales.sale_id'))
-
-        # Pretty sure that this would have been simpler to keep it in one,
-        # but after working on OLTP DB's for so long to me that is an unacceptable
-        # solution for the data model,
-        purchase = relationship("Purchase", uselist=False, back_populates="trade")
-        sale = relationship("Sale", uselist=False, back_populates="trade")
 
         # Default columns from a template I created which are generally pretty useful.
         # Nothing I really use them for here though.

@@ -28,7 +28,7 @@ class DB_Utils:
         engine = create_engine(engine_uri, echo=True)
         logger.info("Engine recreated")
         ForexModels.recreate_all_models(engine)
-        DB_Utils.populate_currency_dimension(engine)
+        # DB_Utils.populate_currency_dimension(engine)
         return engine
 
     @staticmethod
@@ -97,17 +97,12 @@ class DB_Utils:
         :param sale_currency:
         :return:
         """
-        sale = ForexModels.Sale(amount=sale_amount)
-        sale.currency = DB_Utils.get_or_create(session=session,
-                                               model=ForexModels.Currency,
-                                               code=sale_currency)
 
-        purchase = ForexModels.Purchase(amount=purchase_amount)
-        purchase.currency = DB_Utils.get_or_create(session=session,
-                                                   model=ForexModels.Currency,
-                                                   code=purchase_currency)
-
-        trade = ForexModels.Trade(rate=rate, purchase=purchase, sale=sale)
+        trade = ForexModels.Trade(rate=rate,
+                                  purchase_amount=purchase_amount,
+                                  sale_amount=sale_amount,
+                                  purchase_currency_code=purchase_currency,
+                                  sale_currency_code=sale_currency)
 
         session.add(trade)
         session.commit()
