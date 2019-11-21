@@ -25,4 +25,5 @@ def register_extensions(app):
 if __name__ == '__main__':
      app = create_app(Config)
      DB_Utils.recreate_db(Config.SQLALCHEMY_DATABASE_URI)
+     DB_Utils.add_test_trade(Config.SQLALCHEMY_DATABASE_URI)
      app.run(host='0.0.0.0', port=80, threaded=True)

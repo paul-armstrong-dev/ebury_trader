@@ -88,3 +88,4 @@ class ForexModels:
         # Nothing I really use them for here though.
         created_date_time = Column(DateTime(timezone=True), server_default=func.now())
         table_status = Column(String(20), nullable=False, server_default="New")
+

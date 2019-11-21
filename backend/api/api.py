@@ -6,7 +6,6 @@ from .config import Config
 
 api = Api()
 
-
 class Player(Resource):
     def get(self):
         return jsonify([to_dict(player) for player in PlayerModel.query.all()])
@@ -18,5 +17,11 @@ class CurrencyG(Resource):
                                                                                      "Currency")])
 
 
-api.add_resource(Player, '/')
+class StoredTrades(Resource):
+    def get(self):
+        return jsonify([to_dict(player) for player in DB_Utils.get_model_data_engine(Config.SQLALCHEMY_DATABASE_URI,
+                                                                                     "Trade")])
+
+
+api.add_resource(StoredTrades, '/')
 api.add_resource(CurrencyG, '/cu')

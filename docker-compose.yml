@@ -29,7 +29,7 @@ services:
   client:
     container_name: trader-client
     build:
-      context: ./client
+      context: ./client/
       dockerfile: Dockerfile
     working_dir: '/app'
     volumes:
