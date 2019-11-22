@@ -3,6 +3,7 @@ import axios from "axios";
 import {  Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import { Container, Row, Col , Form} from 'reactstrap';
 import Label from "reactstrap/es/Label";
+import { addContact } from "./requests"
 
   class Converter extends React.Component {
     constructor(props) {
@@ -18,6 +19,11 @@ import Label from "reactstrap/es/Label";
           disable_input: true
       }
     }
+    handleSubmit(data) {
+        console.log('form submission data', data);
+        addContact(data)
+        console.log('sent')
+    }
 
     getCurrencyArray = () => {
         // Encapsulates the GET
@@ -25,7 +31,7 @@ import Label from "reactstrap/es/Label";
         .get("https://api.exchangeratesapi.io/latest")
         .then(response => {
             const currencyAr = ["Select currency"];
-            for (const key in response.data.rates) {
+            for (const key in response.data.rhandates) {
                 currencyAr.push(key);
             }
             currencyAr.push("EUR");
@@ -53,6 +59,8 @@ import Label from "reactstrap/es/Label";
             }
         }
     };
+
+
     // Populate
     componentDidMount() {
         this.getCurrencyArray()
@@ -112,7 +120,7 @@ import Label from "reactstrap/es/Label";
         const amount = this.state.amount;
 
       return (
-          <Form>
+          <Form onSubmit={this.handleSubmit}>
           <Container>
             <Row>
                 <Col>
@@ -204,7 +212,7 @@ import Label from "reactstrap/es/Label";
 
               <Row>
                   <Col sm={{ size: 'auto', offset: 1 }}>
-                          <Button color={"primary"}size="lg">Create</Button>
+                          <Button color={"primary"}size="lg" onClick={this.handleSubmit}>Create</Button>
                   </Col>
                   <Col>
                   </Col>

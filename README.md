@@ -4,7 +4,8 @@
 - There are a few points that I am interested to find out how to do these things better (see client Dockerfile),
 If you have already worked it out, I'd love to hear how, if not maybe we could discuss the better solution 
 - And would really like to learn from the experience
-- See below notes on React, 
+- I spent a lot of my time just understanding React, so if you are unhappy with this submission I would be happy
+to do a new project where I can split my time a bit more evenly between front and backend.  
     - To account for my time on the project,
         - I started on the 15th of November, and had the Flask and DB setup very quickly,
         - After deciding to use React, Javascript is where I have spent 80-90% of the time since, 
@@ -40,8 +41,6 @@ will be the requirements (specially connectors) -- will likely resolve this as a
 
 **Hot reloading** is enabled for the React code, after every code change the container is up-to-date automatically !
 
-A database named `sport_stats` (user: myuser / password: mypassword) is initialized when the database container start. 
-
 These default values can be changed in the `docker-compose.yml` file.
 The Flask application uses SQLAlchemy to retrieve the content of the `Trades`,
 ReactJS call the REST API and display it !
@@ -49,13 +48,17 @@ ReactJS call the REST API and display it !
 
 #### Run the app
 
-Everything is containerized from the client, backend to the database. So all you need is Docker installed, and then you can run :
+Check example .env file;
+- Rename to mysql-credentials.env 
+- fill in all params; 
+- Everything is containerized from the client, backend to the database.
+- So all you need is Docker installed, and then you can run :
 
 ```
 docker-compose up --build
 ```
 
-And your app will be up on the *port 3000* !
+And your app will be up on the **port 3000** !
 
 ##### Reloading Database configuration
 
