@@ -3,8 +3,8 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
 from loguru import logger
-import pandas as pd
 from .forex_models import ForexModels
+import pandas as pd
 
 
 class DB_Utils:
@@ -119,60 +119,3 @@ class DB_Utils:
                                  sale_amount=122,
                                  sale_currency="GBP",
                                  rate=1.2)
-
-#engine = DB_Utils.recreate_db()
-#populate_currency_dimension(engine)
-#engine = create_engine('sqlite:///db/school.db')
-#s = Session(bind=engine)
-
-#
-#
-#
-#
-#
-#
-
-#data = get_model_data(s, "Trade")
-
-#for d in data:
-#    print(d.trade_id)
-#    print(d.purchase.currency.code)
-#    print(d.sale.currency.code)
-#    print(d.purchase.amount)
-#    print(d.sale.amount)
-
-
-
-#sale = ForexModels.Sale(amount=10)
-#purchase = ForexModels.Purchase(amount=1)
-#trade = ForexModels.Trade()
-
-"""
-
-
-sale = ForexModels.Sale(amount=10)
-
-
-purchase = ForexModels.Purchase(amount=15)
-purchase.currency = DB_Utils.get_or_create(session=s, model=ForexModels.Currency, code="EUR")
-
-trade = ForexModels.Trade(rate=1.2, purchase=purchase, sale=sale)
-
-s.add(trade)
-s.commit()
-s.close()
-"""
-
-
-
-
-# t1 = Trade(sale_amount=10, buy_amount=5, rate=15)
-# t1.currency.append(c)
-# t2 = Trade()
-
-
-
-# s.bulk_insert_mappings(Currency, df.to_dict(orient="records"))
-#
-#
-

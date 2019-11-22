@@ -1,5 +1,4 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Date, Float, TIMESTAMP, create_engine
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 from loguru import logger
