@@ -1,6 +1,6 @@
 import React from 'react';
-import './styles/App.css';
 import "./assets/css/argon-dashboard-react.min.css"
+import './styles/App.css';
 import { Fragment } from 'react';
 import Header from './components/header';
 import Routes from "./components/routing";

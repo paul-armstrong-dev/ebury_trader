@@ -12,17 +12,19 @@ import Form from "reactstrap/es/Form";
       super(props);
       this.changeValue=this.changeValue.bind(this);
       this.toggle_s=this.toggle_s.bind(this)
+      this.selectSellCurrency=this.selectSellCurrency.bind(this)
+      this.selectBuyCurrency=this.selectBuyCurrency.bind(this)
       this.toggle_b=this.toggle_b.bind(this)
       this.state = {
-        result: null,
-        fromCurrency: "",
-        toCurrency: "",
-        amount: null,
-        rate: 0.0,
-        all_currencies: [],
-        s_dropDownValue: 'Select action',
+          result: null,
+          fromCurrency: "",
+          toCurrency: "",
+          amount: 0,
+          rate: 0.0,
+          all_currencies: [],
+          s_dropDownValue: 'Select currency',
+          b_dropDownValue: 'Select currency',
           s_dropdownOpen: false,
-          b_dropDownValue: 'Select action',
           b_dropdownOpen: false,
           disable_input: true
       }
@@ -42,17 +44,17 @@ import Form from "reactstrap/es/Form";
     changeValue(event) {
         let id = event.target.getAttribute("id");
         console.log(id)
+        console.log("hi")
         if (id==="sell_field")
         {
             let name = event.target.getAttribute("name");
-            let value = event.target.getAttribute("value");
+            // let value = event.target.getAttribute("value");
 
             this.setState({
               s_dropDownValue: event.target.textContent,
-              rate: value,
-              currency: name,
+              // rate: value,
               fromCurrency: name
-            })
+            });
             console.log("done")
         }
         else if(id==="buy_field")
@@ -64,13 +66,12 @@ import Form from "reactstrap/es/Form";
                 b_dropDownValue: event.target.textContent,
                 rate: value,
                 toCurrency: name,
-                currency: name,
                 // Really hate this property naming, disable = false?
                 disable_input: false
-            })
+            });
+            this.getResult();
 
-
-
+            this.convertCurrency()
         }
     }
 
@@ -87,26 +88,21 @@ import Form from "reactstrap/es/Form";
     }
 
     convertCurrency = () => {
-      if (this.state.fromCurrency !== this.state.toCurrency) {
-        console.log("hi")
-      }
-      return "hi2"
-    }
-
+        if (this.state.fromCurrency !== this.state.toCurrency)
+        {
+            console.log(this.state.fromCurrency);
+            console.log(this.state.toCurrency)
+        }
+    };
 
     getResult = () => {
         if (this.state.fromCurrency && this.state.fromCurrency.length &&
         this.state.toCurrency && this.state.toCurrency.length ) {
       if (this.state.fromCurrency !== this.state.toCurrency) {
         if (this.state.fromCurrency !== this.state.toCurrency) {
-          axios
-              .get(
-                  `https://api.exchangeratesapi.io/latest?base=${
-                      this.state.fromCurrency
-                  }&symbols=${this.state.toCurrency}`
-              )
+          axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.fromCurrency}&symbols=${this.state.toCurrency}`)
               .then(response => {
-                const rate = response.data.rates[this.state.toCurrency]
+                const rate = response.data.rates[this.state.toCurrency];
                 const result =
                     this.state.amount * rate;
 
@@ -122,31 +118,49 @@ import Form from "reactstrap/es/Form";
         }else {
           this.setState({result: "Please select both currencies"});
         }
-    }
+    };
+    selectSellCurrency = (event) => {
+        let name = event.target.getAttribute("name");
+        // let value = event.target.getAttribute("value");
 
+        this.setState({
+            s_dropDownValue: event.target.textContent,
+            fromCurrency: name
+            })};
+
+
+    selectBuyCurrency = (event) => {
+            let name = event.target.getAttribute("name");
+            this.setState({
+                b_dropDownValue: event.target.textContent,
+                toCurrency: name,
+                // Really hate this property naming, disable = false?
+                disable_input: false
+            });
+            console.log(this.state.fromCurrency);
+            console.log(this.state.toCurrency)
+    };
     // Handle change
     convertHandler = (event) => {
-      console.log(event)
+        console.log(event.target.name);
+        console.log(event.target.value);
 
-       // this.getResult()
         if (event.target) {
             if (event.target.name === "from") {
                 this.setState({fromCurrency: event.target.value, result: event.target.value})
-                // this.setState({ result:event.target.value})
             }
-
-            if (event.target.name === "to") {
+           if (event.target.name === "to") {
                 this.setState(
                     {toCurrency: event.target.value, result: event.target.value})
             }
-
             if (event.target.name === "in_amount") {
+
                 this.setState({amount: event.target.value})
             }
         }
     };
     render() {
-        const amount = this.state;
+        const amount = this.state.amount;
 
       return (
           <Form>
@@ -189,7 +203,7 @@ import Form from "reactstrap/es/Form";
                                       name={key}
                                       key={this.state.all_currencies[key]}
                                       value={this.state.all_currencies[key]}
-                                      onClick={event=> this.changeValue(event)}>
+                                      onClick={event=> this.selectSellCurrency(event)}>
                                       {key}
                               </DropdownItem>)}
                           </DropdownMenu>
@@ -209,7 +223,7 @@ import Form from "reactstrap/es/Form";
                                       name={key}
                                       key={this.state.all_currencies[key]}
                                       value={this.state.all_currencies[key]}
-                                      onClick={event=> this.changeValue(event)}>
+                                      onClick={event=> this.selectBuyCurrency(event)}>
                                       {key}
                               </DropdownItem>)}
                           </DropdownMenu>
@@ -232,7 +246,7 @@ import Form from "reactstrap/es/Form";
                       <input
                           id={"in_amount"}
                           name="in_amount"
-                          type="text"
+                          type="number"
                           value={this.state.amount}
                           onChange={event => this.convertHandler(event)}
                           disabled = {(this.state.disable_input)? "disabled" : ""}
