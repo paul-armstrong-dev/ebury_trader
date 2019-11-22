@@ -1,6 +1,7 @@
 import React from 'react';
-import { Table } from 'reactstrap';
 import axios from "axios";
+import { Table, Container , Button, Row, Col, Form} from 'reactstrap';
+import {NewTradeButton} from "../components/buttons/new_trade"
 
   class StoredTradesTable extends React.Component {
       constructor(props) {
@@ -13,11 +14,15 @@ import axios from "axios";
     renderTableData () {
         if (this.state.trades && this.state.trades.length) {
           return this.state.trades.map((trade, index) => {
-            const {purchase_id, rate} = trade //destructuring
+            const {trade_id, Sell_CCY, Sell_Amount, Buy_CCY, Buy_Amount, Rate, Date_Booked} = trade //destructuring
             return (
-                <tr key={purchase_id}>
-                  <td>{purchase_id}</td>
-                  <td>{rate}</td>
+                <tr key={trade_id}>
+                    <td>{Sell_CCY}</td>
+                    <td>{Sell_Amount}</td>
+                    <td>{Buy_CCY}</td>
+                    <td>{Buy_Amount}</td>
+                    <td>{Rate}</td>
+                    <td>{Date_Booked}</td>
                 </tr>
             )
           })
@@ -27,8 +32,11 @@ import axios from "axios";
         if (this.state.trades && this.state.trades.length)
         {
           let header = Object.keys(this.state.trades[0])
+            // TODO: Move elsewhere
+            // Remove invisible ID
+            header = header.filter(e => e !== 'trade_id')
           return header.map((key, index) => {
-            return <th key={index}>{key.toUpperCase()}</th>
+            return <th key={index}>{key.replace("_", " ")}</th>
           })
         }
    }
@@ -47,15 +55,28 @@ import axios from "axios";
     }
     render() {
           return(
-          <div>
-            <h1>React Dynamic Table</h1>
-            <Table borderless={true}>
+              <div>
+              <Form>
+              <Container>
+                  <Row>
+                      <Col>
+                          <h1>Booked trades</h1>
+                      </Col>
+                      <Col>
+                              <NewTradeButton>New trade</NewTradeButton>
+                      </Col>
+                  </Row>
+
+            <Table bordered={true} striped={true}>
               <tbody>
               <tr>{this.renderTableHeader()}</tr>
               {this.renderTableData()}
               </tbody>
             </Table>
-         </div>)
+                  </Container>
+                  </Form>
+              </div>
+                  )
     }
   }
   export default StoredTradesTable

@@ -1,10 +1,9 @@
 import React from "react";
 import axios from "axios";
-import { Button } from 'reactstrap';
-// import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import BootstrapSelect from "./dd_v2";
-import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
+import {  Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import { Container, Row, Col } from 'reactstrap';
+import { Input } from "./input"
+import Form from "reactstrap/es/Form";
 
 // import converter from "./converter.css";
 
@@ -13,45 +12,67 @@ import { Container, Row, Col } from 'reactstrap';
 
       super(props);
       this.changeValue=this.changeValue.bind(this);
-
+      this.toggle_s=this.toggle_s.bind(this)
+      this.toggle_b=this.toggle_b.bind(this)
       this.state = {
         result: null,
-        fromCurrency: "USD",
-        toCurrency: "GBP",
-        amount: 1,
+        fromCurrency: "",
+        toCurrency: "",
+        amount: null,
         rate: 0.0,
         all_currencies: [],
-        dropDownValue: 'Select action',
-        dropdownOpen: false,
+        s_dropDownValue: 'Select action',
+          s_dropdownOpen: false,
+          b_dropDownValue: 'Select action',
+          b_dropdownOpen: false,
+          disable_input: true
       }
-
-
     }
 
-//     toggle(event) {
-//        this.setState({
-//            dropdownOpen: !this.state.dropdownOpen
-//        });
-//    }
+     toggle_s(event) {
+        this.setState({
+            s_dropdownOpen: !this.state.s_dropdownOpen
+        });
+    }
+     toggle_b(event) {
+        this.setState({
+            b_dropdownOpen: !this.state.b_dropdownOpen
+        });
+    }
 
     changeValue(event) {
-        console.log("here")
-        let id = event.currentTarget.getAttribute("id");
-        if (id==="sell")
-        {console.log("done")}
-        let name = event.currentTarget.getAttribute("name");
-        let value = event.currentTarget.getAttribute("value");
-        let key = event.currentTarget.getAttribute("key");
-        this.setState({
-              dropDownValue: event.currentTarget.textContent,
-              rate: value,
-              currency: name
-            })
-        console.log("id-" + id);
-        console.log("name-" + name);
-        console.log("value-" + value);
-        console.log("key-" + key);
+        let id = event.target.getAttribute("id");
+        console.log(id)
+        if (id==="sell_field")
+        {
+            let name = event.target.getAttribute("name");
+            let value = event.target.getAttribute("value");
 
+            this.setState({
+              s_dropDownValue: event.target.textContent,
+              rate: value,
+              currency: name,
+              fromCurrency: name
+            })
+            console.log("done")
+        }
+        else if(id==="buy_field")
+        {
+            let name = event.target.getAttribute("name");
+            let value = event.target.getAttribute("value");
+
+            this.setState({
+                b_dropDownValue: event.target.textContent,
+                rate: value,
+                toCurrency: name,
+                currency: name,
+                // Really hate this property naming, disable = false?
+                disable_input: false
+            })
+
+
+
+        }
     }
 
     // Populate
@@ -72,7 +93,11 @@ import { Container, Row, Col } from 'reactstrap';
       }
       return "hi2"
     }
+
+
     getResult = () => {
+        if (this.state.fromCurrency && this.state.fromCurrency.length &&
+        this.state.toCurrency && this.state.toCurrency.length ) {
       if (this.state.fromCurrency !== this.state.toCurrency) {
         if (this.state.fromCurrency !== this.state.toCurrency) {
           axios
@@ -95,30 +120,37 @@ import { Container, Row, Col } from 'reactstrap';
           this.setState({result: "You cant convert the same currency!"});
         }
       }
+        }else {
+          this.setState({result: "Please select both currencies"});
+        }
     }
+
     // Handle change
     convertHandler = (event) => {
       console.log(event)
-      this.getResult()
 
-      if (event.target.name === "from") {
-        this.setState({ fromCurrency: event.target.value, result:event.target.value})
-        // this.setState({ result:event.target.value})
-      }
+       // this.getResult()
+        if (event.target) {
+            if (event.target.name === "from") {
+                this.setState({fromCurrency: event.target.value, result: event.target.value})
+                // this.setState({ result:event.target.value})
+            }
 
-        if (event.target.name === "to") {
-          this.setState(
-              { toCurrency: event.target.value, result:event.target.value})
+            if (event.target.name === "to") {
+                this.setState(
+                    {toCurrency: event.target.value, result: event.target.value})
+            }
+
+            if (event.target.name === "in_amount") {
+                this.setState({amount: event.target.value})
+            }
         }
-
-      if (event.target.name === "in_amount")
-      {
-        this.setState({amount:event.target.value})
-      }
-
     };
     render() {
+        const amount = this.state;
+
       return (
+          <Form>
           <Container>
             <Row>
                 <Col>
@@ -126,9 +158,7 @@ import { Container, Row, Col } from 'reactstrap';
                 </Col>
               <Col></Col>
               <Col>
-                  <div id="div_in_currency" onClick={event=> this.changeValue(event)}>
-                  <BootstrapSelect id="input_select"></BootstrapSelect>
-                </div>
+
               </Col>
               <Col></Col>
               <Col></Col>
@@ -146,18 +176,17 @@ import { Container, Row, Col } from 'reactstrap';
                       Buy currency
                   </Col>
               </Row>
+          </Container>
+              <Container>
               <Row>
                   <Col>
-                      <div id="div_in_currency" onClick={event=> this.changeValue(event)}>
-                          <BootstrapSelect id="input_select"></BootstrapSelect>
-                      </div>
-                      <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                     <ButtonDropdown isOpen={this.state.s_dropdownOpen} toggle={this.toggle_s}>
                           <DropdownToggle caret color={"primary"} size={"lg"}>
-                              {this.state.dropDownValue}
+                              {this.state.s_dropDownValue}
                           </DropdownToggle>
-                          <DropdownMenu id="sell">
+                          <DropdownMenu id="sell_menu">
                               {Object.keys(this.state.all_currencies).map(key =><DropdownItem
-                                      id={"sell"}
+                                      id={"sell_field"}
                                       name={key}
                                       key={this.state.all_currencies[key]}
                                       value={this.state.all_currencies[key]}
@@ -171,24 +200,19 @@ import { Container, Row, Col } from 'reactstrap';
                   <Col>{this.state.rate && <h3>{this.state.rate}</h3>}</Col>
                   <Col>&#x276F;</Col>
                   <Col>
-                      <ButtonDropdown
-                          isOpen={this.state.dropdownOpen}
-                          toggle={this.toggle}
-                          size={"lg"}
-                          color={"primary"}>
+                      <ButtonDropdown isOpen={this.state.b_dropdownOpen} toggle={this.toggle_b}>
                           <DropdownToggle caret color={"primary"} size={"lg"}>
-                              {this.state.dropDownValue}
+                              {this.state.b_dropDownValue}
                           </DropdownToggle>
-                          <DropdownMenu id="sell">
+                          <DropdownMenu id="buy_menu">
                               {Object.keys(this.state.all_currencies).map(key =><DropdownItem
-                                      id={"sell"}
+                                      id={"buy_field"}
                                       name={key}
                                       key={this.state.all_currencies[key]}
                                       value={this.state.all_currencies[key]}
                                       onClick={event=> this.changeValue(event)}>
                                       {key}
-                              </DropdownItem>
-                              )}
+                              </DropdownItem>)}
                           </DropdownMenu>
                       </ButtonDropdown>
                   </Col>
@@ -203,13 +227,16 @@ import { Container, Row, Col } from 'reactstrap';
                       Buy amount
                   </Col>
               </Row>
-              <Row>
-                  <Col>
+              <Row/>
+                  <Row>
+                  <Col sm={{ size: 'auto', offset: 1 }}>
                       <input
+                          id={"in_amount"}
                           name="in_amount"
                           type="text"
                           value={this.state.amount}
                           onChange={event => this.convertHandler(event)}
+                          disabled = {(this.state.disable_input)? "disabled" : ""}
                       />
                   </Col>
                   <Col></Col>
@@ -218,8 +245,9 @@ import { Container, Row, Col } from 'reactstrap';
                       <Col>{this.state.result && <h3>{this.state.result}</h3>}</Col>
                   </Col>
               </Row>
+
               <Row>
-                  <Col>
+                  <Col sm={{ size: 'auto', offset: 1 }}>
                       <Button color={"primary"} size="lg">Cancel</Button>
                   </Col>
                   <Col></Col>
@@ -230,6 +258,19 @@ import { Container, Row, Col } from 'reactstrap';
                   </Col>
               </Row>
           </Container>
+              <Container>
+                  <Row>
+                  </Row>
+              </Container>
+              <Input
+                id={"input_field"}
+                label="Sell amount"
+                predicted=""
+                locked={true}
+                active={true}
+                value={amount}
+                onChange={amount => this.convertHandler(amount)}/>
+          </Form>
       );
     }
   }

@@ -1,6 +1,5 @@
 import React from "react";
 import {ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
-import axios from "axios";
 
 class BootstrapSelect extends React.Component {
 
@@ -9,63 +8,38 @@ class BootstrapSelect extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.changeValue = this.changeValue.bind(this);
-        this.renderDropDownMenu = this.renderDropDownMenu.bind(this);
-        this.state = {
-            currencies: [],
-            dropDownValue: 'Select action',
-            dropdownOpen: false
-        };
+
     }
 
     toggle(event) {
-
-        this.setState({
-            dropdownOpen: !this.state.dropdownOpen
-        });
+        this.props.toggle(event);
     }
 
-    changeValue(e) {
-      console.log(e.target.name)
-        this.setState({dropDownValue: e.currentTarget.textContent});
-        let id = e.currentTarget.getAttribute("id");
-        console.log(id);
+    changeValue(event) {
+        this.props.changeValue(event);
     }
 
-    renderDropDownMenu(){
-
-
-      if (this.state.currencies && this.state.currencies.length) {
-        return this.state.currencies.map((action, index) => {
-            const {key, value} = action //destructuring
-            return (
-                <DropdownItem id={key} key={key} onClick={this.changeValue}>{value}</DropdownItem>
-            )
-          })
-        }
-    }
-
-
-    componentDidMount() {
-      axios
-              .get(`https://api.exchangeratesapi.io/latest?`)
-              .then(response => {
-                this.setState({currencies: response.data.rates})
-              })
-              .catch(error => {
-                console.log("Opps", error.message);
-              });}
 
     render() {
+        const dropDownOpen = this.props.dropDownOpen;
+        const dropDownValue = this.props.dropDownValue;
+        const allCurrencies = this.props.allCurrencies;
         return (
-            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                <DropdownToggle caret>
-                    {this.state.dropDownValue}
-                </DropdownToggle>
-                <DropdownMenu>
-                  {this.renderDropDownMenu()}
-                </DropdownMenu>
 
-            </ButtonDropdown>
+            <ButtonDropdown isOpen={dropDownOpen} toggle={this.toggle}>
+                          <DropdownToggle caret color={"primary"} size={"lg"}>
+                              {dropDownValue}
+                          </DropdownToggle>
+                          <DropdownMenu>
+                              {Object.keys(allCurrencies).map(key =><DropdownItem
+                                      name={key}
+                                      key={allCurrencies[key]}
+                                      value={allCurrencies[key]}
+                                      onClick={event=> this.changeValue(event)}>
+                                      {key}
+                              </DropdownItem>)}
+                          </DropdownMenu>
+                      </ButtonDropdown>
         );
     }
 

@@ -41,3 +41,12 @@ class ForexModels:
         created_date_time = Column(DateTime(timezone=True), server_default=func.now())
         table_status = Column(String(20), nullable=False, server_default="New")
 
+        def toReport(self):
+            """ Simple function for structuring data according to spec"""
+            return {"trade_id": self.trade_id,
+                    "Sell_CCY": self.sale_currency_code,
+                    "Sell_Amount": self.sale_amount,
+                    "Buy_CCY": self.purchase_currency_code,
+                    "Buy_Amount": self.purchase_amount,
+                    "Rate": self.rate,
+                    "Date_Booked": self.created_date_time.__str__()}
