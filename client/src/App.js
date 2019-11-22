@@ -1,17 +1,23 @@
 import React from 'react';
 import './App.css';
-import Converter from "./components/converter";
-import StoredTradesTable from "./components/stored_trades"
+import "./assets/css/argon-dashboard-react.min.css"
+import { Fragment } from 'react';
+import Header from './components/header';
+import Routes from "./components/routing";
 
-function App() {
-  return (
+const App = () => (
     <div className="App">
-      <header className="App-header">
-        <Converter></Converter>
+        <Fragment>
 
-      </header>
+        <main className="my-lg-9 py-lg-9">
+      <Header/>
+      <Routes/>
+    </main>
+        </Fragment>
     </div>
-  );
-}
+
+);
+
+
 
 export default App;

@@ -173,4 +173,6 @@ s.close()
 
 
 # s.bulk_insert_mappings(Currency, df.to_dict(orient="records"))
+#
+#
 
