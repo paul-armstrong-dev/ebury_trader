@@ -1,161 +1,110 @@
 import React from "react";
 import axios from "axios";
 import {  Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
-import { Container, Row, Col } from 'reactstrap';
-import Form from "reactstrap/es/Form";
-
-// import converter from "./converter.css";
+import { Container, Row, Col , Form} from 'reactstrap';
+import Label from "reactstrap/es/Label";
 
   class Converter extends React.Component {
     constructor(props) {
 
       super(props);
-      this.changeValue=this.changeValue.bind(this);
-      this.toggle_s=this.toggle_s.bind(this)
-      this.selectSellCurrency=this.selectSellCurrency.bind(this)
-      this.selectBuyCurrency=this.selectBuyCurrency.bind(this)
-      this.toggle_b=this.toggle_b.bind(this)
       this.state = {
           result: null,
-          fromCurrency: "",
-          toCurrency: "",
+          buyCurrency: "",
+          sellCurrency: "",
           amount: 0,
           rate: 0.0,
-          all_currencies: [],
-          s_dropDownValue: 'Select currency',
-          b_dropDownValue: 'Select currency',
-          s_dropdownOpen: false,
-          b_dropdownOpen: false,
+          currencies: [],
           disable_input: true
       }
     }
 
-     toggle_s(event) {
-        this.setState({
-            s_dropdownOpen: !this.state.s_dropdownOpen
-        });
-    }
-     toggle_b(event) {
-        this.setState({
-            b_dropdownOpen: !this.state.b_dropdownOpen
-        });
-    }
-
-    changeValue(event) {
-        let id = event.target.getAttribute("id");
-        console.log(id)
-        console.log("hi")
-        if (id==="sell_field")
-        {
-            let name = event.target.getAttribute("name");
-            // let value = event.target.getAttribute("value");
-
-            this.setState({
-              s_dropDownValue: event.target.textContent,
-              // rate: value,
-              fromCurrency: name
-            });
-            console.log("done")
-        }
-        else if(id==="buy_field")
-        {
-            let name = event.target.getAttribute("name");
-            let value = event.target.getAttribute("value");
-
-            this.setState({
-                b_dropDownValue: event.target.textContent,
-                rate: value,
-                toCurrency: name,
-                // Really hate this property naming, disable = false?
-                disable_input: false
-            });
-            this.getResult();
-
-            this.convertCurrency()
-        }
-    }
-
-    // Populate
-    componentDidMount() {
+    getCurrencyArray = () => {
+        // Encapsulates the GET
       axios
         .get("https://api.exchangeratesapi.io/latest")
         .then(response => {
-          this.setState({all_currencies: response.data.rates})
+            const currencyAr = ["Select currency"];
+            for (const key in response.data.rates) {
+                currencyAr.push(key);
+            }
+            currencyAr.push("EUR");
+            this.setState({ currencies: currencyAr });
         })
-        .catch(err => {
+          .catch(err => {
           console.log("oppps", err);
-        });
-    }
+        })
+    };
 
     convertCurrency = () => {
-        if (this.state.fromCurrency !== this.state.toCurrency)
+        if (this.state.sellCurrency !== this.state.buyCurrency
+            && this.state.amount !== 0)
         {
-            console.log(this.state.fromCurrency);
-            console.log(this.state.toCurrency)
+            if (this.state.sellCurrency !== this.state.buyCurrency) {
+                axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.sellCurrency}&symbols=${this.state.buyCurrency}`)
+                    .then(response => {
+                        const rate = response.data.rates[this.state.buyCurrency];
+                        const result = this.state.amount * rate;
+                        this.setState({result: result.toFixed(5), rate: rate});
+                    })
+                    .catch(error => {
+                        console.log("Opps", error.message);
+                    });
+            }
         }
     };
-
-    getResult = () => {
-        if (this.state.fromCurrency && this.state.fromCurrency.length &&
-        this.state.toCurrency && this.state.toCurrency.length ) {
-      if (this.state.fromCurrency !== this.state.toCurrency) {
-        if (this.state.fromCurrency !== this.state.toCurrency) {
-          axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.fromCurrency}&symbols=${this.state.toCurrency}`)
-              .then(response => {
-                const rate = response.data.rates[this.state.toCurrency];
-                const result =
-                    this.state.amount * rate;
-
-                this.setState({result: result.toFixed(5), rate: rate});
-              })
-              .catch(error => {
-                console.log("Opps", error.message);
-              });
-        } else {
-          this.setState({result: "You cant convert the same currency!"});
-        }
-      }
-        }else {
-          this.setState({result: "Please select both currencies"});
-        }
+    // Populate
+    componentDidMount() {
+        this.getCurrencyArray()
     };
-    selectSellCurrency = (event) => {
-        let name = event.target.getAttribute("name");
-        // let value = event.target.getAttribute("value");
 
-        this.setState({
-            s_dropDownValue: event.target.textContent,
-            fromCurrency: name
-            })};
+    // Sepated this from the calculation so you can type as many numbers as you like after populating
+    getRates = () => {
+        if (this.state.sellCurrency !== this.state.buyCurrency){
+            axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.sellCurrency}&symbols=${this.state.buyCurrency}`)
+                    .then(response => {
+                        const rate = response.data.rates[this.state.buyCurrency];
+                        this.setState({rate : rate});
+                    })}};
 
+    calculateResult = () => {
+        if (this.state.amount !== 0) {
+            const result = this.state.amount * this.state.rate;
+            this.setState({result: result.toFixed(5)});
+        }
+    }
 
-    selectBuyCurrency = (event) => {
-            let name = event.target.getAttribute("name");
-            this.setState({
-                b_dropDownValue: event.target.textContent,
-                toCurrency: name,
-                // Really hate this property naming, disable = false?
-                disable_input: false
-            });
-            console.log(this.state.fromCurrency);
-            console.log(this.state.toCurrency)
-    };
     // Handle change
     convertHandler = (event) => {
-        console.log(event.target.name);
-        console.log(event.target.value);
-
         if (event.target) {
-            if (event.target.name === "from") {
-                this.setState({fromCurrency: event.target.value, result: event.target.value})
-            }
-           if (event.target.name === "to") {
-                this.setState(
-                    {toCurrency: event.target.value, result: event.target.value})
-            }
+            // most active output first
             if (event.target.name === "in_amount") {
-
                 this.setState({amount: event.target.value})
+                this.calculateResult()
+            }
+            else if (event.target.name === "sell") {
+
+                console.log(this.state.buyCurrency)
+                this.setState({sellCurrency: event.target.value})
+
+                if (this.state.buyCurrency !== ""){
+                    this.getRates()
+
+                    if (this.state.amount !== 0){
+                        this.calculateResult()
+                    }
+
+                }
+
+            }
+            else if (event.target.name === "buy") {
+                console.log(this.state.sellCurrency)
+                this.setState(
+                    {
+                        buyCurrency: event.target.value,
+                        disable_input: false}
+                )
+                this.getRates()
             }
         }
     };
@@ -193,41 +142,31 @@ import Form from "reactstrap/es/Form";
               <Container>
               <Row>
                   <Col>
-                     <ButtonDropdown isOpen={this.state.s_dropdownOpen} toggle={this.toggle_s}>
-                          <DropdownToggle caret color={"primary"} size={"lg"}>
-                              {this.state.s_dropDownValue}
-                          </DropdownToggle>
-                          <DropdownMenu id="sell_menu">
-                              {Object.keys(this.state.all_currencies).map(key =><DropdownItem
-                                      id={"sell_field"}
-                                      name={key}
-                                      key={this.state.all_currencies[key]}
-                                      value={this.state.all_currencies[key]}
-                                      onClick={event=> this.selectSellCurrency(event)}>
-                                      {key}
-                              </DropdownItem>)}
-                          </DropdownMenu>
-                      </ButtonDropdown>
+                      <select
+                          name="sell"
+                          onChange={event => this.convertHandler(event)}
+                          value={this.state.sellCurrency}
+                          placeholder={"Select currency"}>
+                      >
+                          {this.state.currencies.map(cur => (
+                              <option key={cur}>{cur}</option>
+                          ))}
+                      </select>
                   </Col>
+
                   <Col>&#x276F;</Col>
                   <Col>{this.state.rate && <h3>{this.state.rate}</h3>}</Col>
                   <Col>&#x276F;</Col>
-                  <Col>
-                      <ButtonDropdown isOpen={this.state.b_dropdownOpen} toggle={this.toggle_b}>
-                          <DropdownToggle caret color={"primary"} size={"lg"}>
-                              {this.state.b_dropDownValue}
-                          </DropdownToggle>
-                          <DropdownMenu id="buy_menu">
-                              {Object.keys(this.state.all_currencies).map(key =><DropdownItem
-                                      id={"buy_field"}
-                                      name={key}
-                                      key={this.state.all_currencies[key]}
-                                      value={this.state.all_currencies[key]}
-                                      onClick={event=> this.selectBuyCurrency(event)}>
-                                      {key}
-                              </DropdownItem>)}
-                          </DropdownMenu>
-                      </ButtonDropdown>
+
+                  <Col><select
+                          name="buy"
+                          onChange={event => this.convertHandler(event)}
+                          value={this.state.buyCurrency}
+                          placeholder={"Select currency"}>
+                          {this.state.currencies.map(cur => (
+                              <option key={cur}>{cur}</option>
+                          ))}
+                      </select>
                   </Col>
               </Row>
               <Row>
@@ -255,19 +194,24 @@ import Form from "reactstrap/es/Form";
                   <Col></Col>
                   <Col></Col>
                   <Col>
-                      <Col>{this.state.result && <h3>{this.state.result}</h3>}</Col>
+                      <Col>
+                          <Label name={"rate"}>
+                            {this.state.result && <h3>{this.state.result}</h3>}
+                          </Label>
+                      </Col>
                   </Col>
               </Row>
 
               <Row>
                   <Col sm={{ size: 'auto', offset: 1 }}>
-                      <Button color={"primary"} size="lg">Cancel</Button>
+                          <Button color={"primary"}size="lg">Create</Button>
+                  </Col>
+                  <Col>
                   </Col>
                   <Col></Col>
                   <Col></Col>
-                  <Col></Col>
                   <Col>
-                      <Button color={"primary"}size="lg">Create</Button>
+                      <Button color={"primary"} size="lg">Cancel</Button>
                   </Col>
               </Row>
           </Container>
