@@ -11,7 +11,7 @@ export function CancelTradeButton() {
 
   return (
     <Button color={"primary"} size="lg" onClick={handleClick}>
-      Go home
+      Click here to begin
     </Button>
   );
 }

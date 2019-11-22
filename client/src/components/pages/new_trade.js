@@ -1,5 +1,5 @@
 import React from 'react';
-import Converter from "../components/converter";
+import Converter from "../converter";
 
 
 class NewTradePage extends React.Component {

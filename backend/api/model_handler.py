@@ -7,7 +7,11 @@ from .forex_models import ForexModels
 import pandas as pd
 
 
+
 class DB_Utils:
+    """ Left all of these as static methods to try simplify the db session management,
+    Ideally going forward I would like create a session / context handler which we would
+    call using with session(): - but think this is a safe quick implementation"""
     @staticmethod
     def get_or_create(session, model, **kwargs):
         """ Here to managed dimension mapping """

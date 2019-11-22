@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './styles/App.css';
 import "./assets/css/argon-dashboard-react.min.css"
 import { Fragment } from 'react';
 import Header from './components/header';
