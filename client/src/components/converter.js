@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import {  Button, ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle} from "reactstrap";
 import { Container, Row, Col } from 'reactstrap';
-import { Input } from "./input"
 import Form from "reactstrap/es/Form";
 
 // import converter from "./converter.css";
@@ -262,14 +261,7 @@ import Form from "reactstrap/es/Form";
                   <Row>
                   </Row>
               </Container>
-              <Input
-                id={"input_field"}
-                label="Sell amount"
-                predicted=""
-                locked={true}
-                active={true}
-                value={amount}
-                onChange={amount => this.convertHandler(amount)}/>
+
           </Form>
       );
     }

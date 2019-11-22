@@ -18,47 +18,10 @@ const Header = () => (
 
           <Col className="d-none d-lg-flex justify-content-start">
             <Nav className="mrx-auto" navbar>
-
-              <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="/">
-                  <img src={AVATAR} alt="avatar" className="img-fluid rounded-circle" style={{ width: 36 }} />
-                </NavLink>
-              </NavItem>
-
-              <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="/">Home</NavLink>
-              </NavItem>
-
-              <NavItem className="d-flex align-items-center">
-                <NavLink className="font-weight-bold" href="/">Events</NavLink>
-              </NavItem>
-
-              <UncontrolledDropdown className="d-flex align-items-center" nav inNavbar>
-                <DropdownToggle className="font-weight-bold" nav caret>Learn</DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem className="font-weight-bold text-secondary text-uppercase" header disabled>Learn React</DropdownItem>
-                  <DropdownItem divider />
-                  <DropdownItem>Documentation</DropdownItem>
-                  <DropdownItem>Tutorials</DropdownItem>
-                  <DropdownItem>Courses</DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-
+              <h1>Trader app</h1>
             </Nav>
           </Col>
 
-          <Col className="d-flex justify-content-xs-start justify-content-lg-center">
-            <NavbarBrand className="d-inline-block p-0" href="/" style={{ width: 80 }}>
-              <img src={logo} alt="logo" className="position-relative img-fluid" />
-            </NavbarBrand>
-          </Col>
-
-          <Col className="d-none d-lg-flex justify-content-end">
-            <Form inline>
-              <Input type="search" className="mr-3" placeholder="Search React Courses" />
-              <Button type="submit" color="info" outline>Search</Button>
-            </Form>
-          </Col>
 
         </Row>
       </Container>
