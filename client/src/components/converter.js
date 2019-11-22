@@ -31,7 +31,7 @@ import { addContact } from "./requests"
         .get("https://api.exchangeratesapi.io/latest")
         .then(response => {
             const currencyAr = ["Select currency"];
-            for (const key in response.data.rhandates) {
+            for (const key in response.data.rates) {
                 currencyAr.push(key);
             }
             currencyAr.push("EUR");
