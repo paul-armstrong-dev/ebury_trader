@@ -1,5 +1,5 @@
 import React from 'react';
-import StoredTradesTable from "../components/stored_trades";
+import StoredTradesTable from "../stored_trades";
 
 class TradesPage extends React.Component {
   render() {

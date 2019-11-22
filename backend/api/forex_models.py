@@ -1,9 +1,10 @@
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Date, Float, TIMESTAMP, create_engine
 from sqlalchemy.sql import func
-from sqlalchemy.ext.declarative import declarative_base
 from loguru import logger
+from flask_sqlalchemy import SQLAlchemy
 
-Base = declarative_base()
+
+db = SQLAlchemy()
 
 
 class ForexModels:
@@ -13,15 +14,14 @@ class ForexModels:
          Check commit history for data model implementation should you need to store this data over years,
          but really didn't see the need for this
         """
-
     @staticmethod
     def recreate_all_models(engine):
         logger.info("Recreating all models")
-        Base.metadata.drop_all(engine)
-        Base.metadata.create_all(engine)
+        db.metadata.drop_all(engine)
+        db.metadata.create_all(engine)
         logger.info("Models recreated")
 
-    class Trade(Base):
+    class Trade(db.Model):
         """ Fact table """
         __tablename__ = 'fct_trades'
         trade_id = Column(Integer,

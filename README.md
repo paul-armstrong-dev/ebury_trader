@@ -1,5 +1,12 @@
-# ebury_trader
-Ebury take home assignment
+# Ebury trading app
+SO
+
+
+### Flask API
+
+### Maria DB
+
+### React
 
 
 ### Features

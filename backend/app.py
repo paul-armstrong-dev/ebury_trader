@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 
 from api.api import api
-from api.models import db
+from api.forex_models import db
 from api.config import Config
 from api.model_handler import DB_Utils
 
@@ -17,8 +17,6 @@ def create_app(config):
 def register_extensions(app):
     api.init_app(app)
     db.init_app(app)
-
-#app = create_app(Config)
 
 
 # Run the application

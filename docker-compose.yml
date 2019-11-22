@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
 
-  download_manager_db:
+  trader-db:
     container_name: trader-db
     image: mariadb:10.3
     restart: always
@@ -12,7 +12,7 @@ services:
       - ./db:/docker-entrypoint-initdb.d/:ro
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
-  flask-api:
+  flask-middleware:
     container_name: trader-backend
     build:
       context: ./backend/
@@ -24,9 +24,9 @@ services:
     volumes:
       - ./backend:/usr/src/app
     depends_on:
-      - "download_manager_db"
+      - "trader-db"
 
-  client:
+  react-client:
     container_name: trader-client
     build:
       context: ./client/
@@ -38,8 +38,7 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      - "flask-api"
+      - "flask-middleware"
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
-      - HOST_URL=http://192.168.99.100:5000
