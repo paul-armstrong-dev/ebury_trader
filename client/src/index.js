@@ -5,15 +5,14 @@ import 'bootstrap/dist/css/bootstrap.css';
 import * as serviceWorker from './serviceWorker';
 import history from "./components/history";
 import App from './App';
-import {BrowserRouter, Router} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
-  <BrowserRouter history={history}>
-    <App />
-  </BrowserRouter>,
-  document.getElementById("root")
+    <BrowserRouter history={history}>
+        <App/>
+    </BrowserRouter>,
+    document.getElementById("root")
 );
-
 
 
 // If you want your app to work offline and load faster, you can change
