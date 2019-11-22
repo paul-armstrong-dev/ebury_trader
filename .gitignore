@@ -22,7 +22,7 @@
 .env.production.local
 
 
-*.env
+mysql-credentials.env
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
