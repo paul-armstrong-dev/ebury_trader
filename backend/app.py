@@ -1,10 +1,10 @@
+from api.api import api
+from api.config import Config
+from api.forex_models import db
+from api.model_handler import DB_Utils
 from flask import Flask
 from flask_cors import CORS
 
-from api.api import api
-from api.forex_models import db
-from api.config import Config
-from api.model_handler import DB_Utils
 
 def create_app(config):
     app = Flask(__name__)
@@ -21,7 +21,7 @@ def register_extensions(app):
 
 # Run the application
 if __name__ == '__main__':
-     app = create_app(Config)
-     DB_Utils.recreate_db(Config.SQLALCHEMY_DATABASE_URI)
-     DB_Utils.add_test_trade(Config.SQLALCHEMY_DATABASE_URI)
-     app.run(host='0.0.0.0', port=80, threaded=True)
+    app = create_app(Config)
+    DB_Utils.recreate_db(Config.SQLALCHEMY_DATABASE_URI)
+    DB_Utils.add_test_trade(Config.SQLALCHEMY_DATABASE_URI)
+    app.run(host='0.0.0.0', port=80, threaded=True)

@@ -1,17 +1,18 @@
+import pandas as pd
+from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 from sqlalchemy.orm.exc import NoResultFound
-from loguru import logger
-from .forex_models import ForexModels
-import pandas as pd
 
+from .forex_models import ForexModels
 
 
 class DB_Utils:
     """ Left all of these as static methods to try simplify the db session management,
     Ideally going forward I would like create a session / context handler which we would
     call using with session(): - but think this is a safe quick implementation"""
+
     @staticmethod
     def get_or_create(session, model, **kwargs):
         """ Here to managed dimension mapping """

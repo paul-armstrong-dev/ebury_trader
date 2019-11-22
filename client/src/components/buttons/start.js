@@ -1,17 +1,17 @@
 import React from 'react'
-import { Button } from "reactstrap";
-import { useHistory } from "react-router-dom";
+import {Button} from "reactstrap";
+import {useHistory} from "react-router-dom";
 
 export function StartButton() {
-  let history = useHistory();
+    let history = useHistory();
 
-  function handleClick() {
-    history.push("/Trades");
-  }
+    function handleClick() {
+        history.push("/Trades");
+    }
 
-  return (
-    <Button color={"primary"} size="lg" onClick={handleClick}>
-      Start here!
-    </Button>
-  );
+    return (
+        <Button color={"primary"} size="lg" onClick={handleClick}>
+            Start here!
+        </Button>
+    );
 }
