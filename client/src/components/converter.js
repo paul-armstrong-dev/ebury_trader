@@ -63,7 +63,7 @@ class Converter extends React.Component {
     // Populate
     componentDidMount() {
         this.getCurrencyArray()
-    };
+    }
 
     // Sepated this from the calculation so you can type as many numbers as you like after populating
     getRates = () => {
@@ -81,22 +81,22 @@ class Converter extends React.Component {
             const result = this.state.amount * this.state.rate;
             this.setState({result: result.toFixed(5)});
         }
-    }
+    };
 
     // Handle change
     convertHandler = (event) => {
         if (event.target) {
             // most active output first
             if (event.target.name === "in_amount") {
-                this.setState({amount: event.target.value})
+                this.setState({amount: event.target.value});
                 this.calculateResult()
             } else if (event.target.name === "sell") {
 
-                console.log(this.state.buyCurrency)
-                this.setState({sellCurrency: event.target.value})
+                console.log(this.state.buyCurrency);
+                this.setState({sellCurrency: event.target.value});
 
                 if (this.state.buyCurrency !== "") {
-                    this.getRates()
+                    this.getRates();
 
                     if (this.state.amount !== 0) {
                         this.calculateResult()
@@ -105,21 +105,19 @@ class Converter extends React.Component {
                 }
 
             } else if (event.target.name === "buy") {
-                console.log(this.state.sellCurrency)
+                console.log(this.state.sellCurrency);
                 this.setState(
                     {
                         buyCurrency: event.target.value,
                         disable_input: false
                     }
-                )
+                );
                 this.getRates()
             }
         }
     };
 
     render() {
-        const amount = this.state.amount;
-
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Container>

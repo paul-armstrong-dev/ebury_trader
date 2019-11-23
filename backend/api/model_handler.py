@@ -8,7 +8,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from .forex_models import ForexModels
 
 
-class DB_Utils:
+class DbUtils:
     """ Left all of these as static methods to try simplify the db session management,
     Ideally going forward I would like create a session / context handler which we would
     call using with session(): - but think this is a safe quick implementation"""
@@ -33,7 +33,7 @@ class DB_Utils:
         engine = create_engine(engine_uri, echo=True)
         logger.info("Engine recreated")
         ForexModels.recreate_all_models(engine)
-        # DB_Utils.populate_currency_dimension(engine)
+        # DbUtils.populate_currency_dimension(engine)
         return engine
 
     @staticmethod
@@ -118,9 +118,9 @@ class DB_Utils:
     def add_test_trade(engine_uri):
         engine = create_engine(engine_uri, echo=True)
         s = Session(bind=engine)
-        DB_Utils.store_new_trade(session=s,
-                                 purchase_amount=4444,
-                                 purchase_currency="EUR",
-                                 sale_amount=122,
-                                 sale_currency="GBP",
-                                 rate=1.2)
+        DbUtils.store_new_trade(session=s,
+                                purchase_amount=4444,
+                                purchase_currency="EUR",
+                                sale_amount=122,
+                                sale_currency="GBP",
+                                rate=1.2)

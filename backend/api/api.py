@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_restful import reqparse, Api, Resource
 
 from .config import Config
-from .model_handler import DB_Utils
+from .model_handler import DbUtils
 
 api = Api()
 
@@ -11,7 +11,7 @@ parser = reqparse.RequestParser()
 
 class StoredTrades(Resource):
     def get(self):
-        return jsonify([trade.toReport() for trade in DB_Utils.get_model_data_engine(Config.SQLALCHEMY_DATABASE_URI,
+        return jsonify([trade.toReport() for trade in DbUtils.get_model_data_engine(Config.SQLALCHEMY_DATABASE_URI,
                                                                                      "Trade")])
 
     def post(self):
