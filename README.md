@@ -61,6 +61,7 @@ ReactJS call the REST API and display it !
 Check example .env file;
 - Rename to mysql-credentials.env 
 - fill in all params; 
+    - Unfortunately I have not passed the DB name and port all the way through using the .env files so these need to stay as is.
 - Everything is containerized from the client, backend to the database.
 - So all you need is Docker installed, and then you can run :
 
