@@ -118,8 +118,6 @@ class Converter extends React.Component {
     };
 
     render() {
-        const amount = this.state.amount;
-
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Container>
