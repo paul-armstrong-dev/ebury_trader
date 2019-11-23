@@ -4,6 +4,8 @@ import {Col, Container, Nav, Navbar, Row} from 'reactstrap';
 
 const AVATAR = 'https://www.gravatar.com/avatar/429e504af19fc3e1cfa5c4326ef3394c?s=240&d=mm&r=pg';
 
+
+
 const Header = () => (
     <header>
         <Navbar fixed="top" color="light" light expand="xs" className="border-bottom border-gray bg-white"
