@@ -1,7 +1,7 @@
 import React from 'react'
 import StartPage from "./pages/start_page";
-import NewTradePage from "./pages/new_trade";
-import TradesPage from "./pages/trades";
+import NewTradePage from "./pages/NewTradePage";
+import TradesPage from "./pages/TradesPage";
 import {Route} from 'react-router-dom';
 
 const Routes = () => (
