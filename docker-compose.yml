@@ -22,7 +22,7 @@ services:
     env_file:
       - mysql-credentials.env
     volumes:
-      - ./backend:/usr/src/app
+      - "./backend:/app"
     depends_on:
       - "trader-db"
 
