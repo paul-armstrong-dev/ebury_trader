@@ -8,7 +8,6 @@ const App = () => (
         <Fragment>
 
             <main className="my-lg-9 py-lg-9">
-                <Header/>
                 <Routes/>
             </main>
         </Fragment>
