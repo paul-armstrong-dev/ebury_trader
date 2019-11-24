@@ -58,8 +58,8 @@ ReactJS call the REST API and display it !
 
 #### Run the app
 
-Check example .env file;
-- Rename to .env.test 
+Check example.env file;
+- Rename to .env
 - fill in all params or keep default; 
     - Unfortunately I have not passed the DB name and port all the way through using the .env files so these need to stay as is.
 - Everything is containerized from the client, backend to the database.
