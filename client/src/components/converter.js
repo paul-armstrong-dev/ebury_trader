@@ -2,7 +2,8 @@ import React from "react";
 import axios from "axios";
 import {Button, Col, Container, Form, Row} from "reactstrap";
 import Label from "reactstrap/es/Label";
-import {addContact} from "./requests"
+import {addTrade} from "./requests"
+import {getLatestRates} from "./requests"
 
 class Converter extends React.Component {
     constructor(props) {
@@ -16,56 +17,47 @@ class Converter extends React.Component {
             rate: 0.0,
             currencies: [],
             disable_input: true
-        }
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
+
     handleSubmit(data) {
-        console.log('form submission data', data);
-        addContact(data)
-        console.log('sent')
+        const params = {
+            buy: this.state.buyCurrency,
+            sell: this.state.sellCurrency,
+            rate: this.state.rate,
+            amount: this.state.amount,
+            result: this.state.result
+        };
+        addTrade(params).then(response => {
+            console.log(response)
+        });
+        console.log('sent');
     }
 
     getCurrencyArray = () => {
         // Encapsulates the GET
-        axios
-            .get("https://api.exchangeratesapi.io/latest")
-            .then(response => {
-                const currencyAr = ["Select currency"];
-                for (const key in response.data.rates) {
-                    currencyAr.push(key);
-                }
-                currencyAr.push("EUR");
-                this.setState({currencies: currencyAr});
-            })
+        getLatestRates().then(response => {
+            const currencyAr = ["Select currency"];
+            for (const key in response.data.rates) {
+                currencyAr.push(key);
+            }
+            currencyAr.push("EUR");
+            this.setState({currencies: currencyAr});
+        })
             .catch(err => {
                 console.log("oppps", err);
             })
     };
-
-    convertCurrency = () => {
-        if (this.state.sellCurrency !== this.state.buyCurrency
-            && this.state.amount !== 0) {
-            if (this.state.sellCurrency !== this.state.buyCurrency) {
-                axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.sellCurrency}&symbols=${this.state.buyCurrency}`)
-                    .then(response => {
-                        const rate = response.data.rates[this.state.buyCurrency];
-                        const result = this.state.amount * rate;
-                        this.setState({result: result.toFixed(5), rate: rate});
-                    })
-                    .catch(error => {
-                        console.log("Opps", error.message);
-                    });
-            }
-        }
-    };
-
 
     // Populate
     componentDidMount() {
         this.getCurrencyArray()
     }
 
-    // Sepated this from the calculation so you can type as many numbers as you like after populating
+    // Separated this from the calculation so you can type as many numbers as you like after populating
     getRates = () => {
         if (this.state.sellCurrency !== this.state.buyCurrency) {
             axios.get(`https://api.exchangeratesapi.io/latest?base=${this.state.sellCurrency}&symbols=${this.state.buyCurrency}`)
@@ -90,7 +82,8 @@ class Converter extends React.Component {
             if (event.target.name === "in_amount") {
                 this.setState({amount: event.target.value});
                 this.calculateResult()
-            } else if (event.target.name === "sell") {
+            }
+            else if (event.target.name === "sell") {
 
                 console.log(this.state.buyCurrency);
                 this.setState({sellCurrency: event.target.value});

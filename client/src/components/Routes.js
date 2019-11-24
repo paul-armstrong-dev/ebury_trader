@@ -10,7 +10,7 @@ const Routes = () => (
         <Route path="/Trades" component={TradesPage}/>
         <Route path="/NewTrade" component={NewTradePage}/>
     </div>
-)
+);
 
 
 export default Routes

@@ -1,7 +1,7 @@
 import React from 'react';
-import axios from "axios";
 import {Col, Container, Form, Row, Table} from 'reactstrap';
 import {NewTradeButton} from "../components/buttons/new_trade"
+import {getTrades} from "./requests"
 
 class StoredTradesTable extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class StoredTradesTable extends React.Component {
     renderTableData() {
         if (this.state.trades && this.state.trades.length) {
             return this.state.trades.map((trade, index) => {
-                const {trade_id, Sell_CCY, Sell_Amount, Buy_CCY, Buy_Amount, Rate, Date_Booked} = trade //destructuring
+                const {trade_id, Sell_CCY, Sell_Amount, Buy_CCY, Buy_Amount, Rate, Date_Booked} = trade; //destructuring
                 return (
                     <tr key={trade_id}>
                         <td>{Sell_CCY}</td>
@@ -32,10 +32,11 @@ class StoredTradesTable extends React.Component {
 
     renderTableHeader() {
         if (this.state.trades && this.state.trades.length) {
-            let header = Object.keys(this.state.trades[0])
+            let header = Object.keys(this.state.trades[0]);
+
             // TODO: Move elsewhere
             // Remove invisible ID
-            header = header.filter(e => e !== 'trade_id')
+            header = header.filter(e => e !== 'trade_id');
             return header.map((key, index) => {
                 return <th key={index}>{key.replace("_", " ")}</th>
             })
@@ -44,15 +45,11 @@ class StoredTradesTable extends React.Component {
 
     // Populate
     componentDidMount() {
-        axios
-            .get("http://localhost:5000/")
-            .then(response => {
-                console.log(response)
+        getTrades().then(response => {
                 this.setState({trades: response.data});
-            })
-            .catch(err => {
-                console.log("oppps", err);
-            });
+        }).catch(err => {
+            console.log("oppps", err);
+        });
     }
 
     render() {
