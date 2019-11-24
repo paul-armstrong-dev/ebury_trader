@@ -1,8 +1,7 @@
 # Ebury trading app
 
----- 
 - I have managed to add some fairly boilerplate testing over the weekend, I would really like to work on and make the 
-React test components way more extensive.  
+React test components way more extensive. 
 - If my application is unsuccessful **please** can we still go through this code and discuss; 
 - There are a few points that I am interested to find out how to do these things better (see client Dockerfile),
 If you have already worked it out, I'd love to hear how, if not maybe we could discuss the better solution 
