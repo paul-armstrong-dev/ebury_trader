@@ -31,8 +31,8 @@ class ForexModels:
 
         sale_amount = Column(Float, nullable=False)
         sale_currency_code = Column(String(3), nullable=False)
-        purchase_amount = Column(Float, nullable=False)
-        purchase_currency_code = Column(String(3), nullable=False)
+        buy_amount = Column(Float, nullable=False)
+        buy_currency_code = Column(String(3), nullable=False)
         rate = Column(Float, nullable=True)
 
         # Default columns from a template I created which are generally pretty useful.
@@ -45,7 +45,7 @@ class ForexModels:
             return {"trade_id": self.trade_id,
                     "Sell_CCY": self.sale_currency_code,
                     "Sell_Amount": self.sale_amount,
-                    "Buy_CCY": self.purchase_currency_code,
-                    "Buy_Amount": self.purchase_amount,
+                    "Buy_CCY": self.buy_currency_code,
+                    "Buy_Amount": self.buy_amount,
                     "Rate": self.rate,
                     "Date_Booked": self.created_date_time.__str__()}
