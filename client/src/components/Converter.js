@@ -2,7 +2,7 @@ import React from 'react';
 import CurrencyInput from "./currency/CurrencyInput";
 import CurrencyResult from "./currency/CurrencyResult";
 import CurrencySelect from "./currency/CurrencySelect";
-import {getLatestRates} from "./requests";
+import {addTrade, getLatestRates} from "./requests";
 import axios from "axios";
 import {CancelTradeButton} from "./buttons/cancel_trade";
 import {Button, Col, Container, Form, Row, FormGroup, Label, Input} from "reactstrap";
@@ -12,6 +12,7 @@ class Converter extends React.Component {
   constructor(props) {
     super(props);
     this.handleCurrencyInput = this.handleCurrencyInput.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBuyCurrencySelect = this.handleBuyCurrencySelect.bind(this);
     this.handleBuyCurrencyToggle = this.handleBuyCurrencyToggle.bind(this);
     this.handleSellCurrencyToggle = this.handleSellCurrencyToggle.bind(this);
@@ -28,12 +29,25 @@ class Converter extends React.Component {
         buyDropDownOpen: false,
         buyDropDownValue: "",
         sellDropDownOpen: false,
-        sellDropDownValue: ""
+        sellDropDownValue: "",
+        result: "",
+        disable_input: true,
+        disable_save: true
+
     };
   }
 
   handleCurrencyInput(amount) {
-    this.setState({amount});
+      const input = parseFloat(amount);
+        if (Number.isNaN(input)) {
+            return '';
+        }
+        this.setState(
+            {
+                amount: amount,
+                disable_save: false,
+            });
+        this.getCurrencyResult();
   }
 
 
@@ -55,6 +69,11 @@ class Converter extends React.Component {
       this.getRates()
   }
 
+
+    getCurrencyResult() {
+    const result = this.state.amount * this.state.rate;
+    this.setState({result: result});
+    }
 
   handleSellCurrencySelect (event)  {
       this.setState({
@@ -87,6 +106,19 @@ class Converter extends React.Component {
                 })
         }
     };
+    handleSubmit() {
+        const params = {
+            buy: this.state.buyCurrency,
+            sell: this.state.sellCurrency,
+            rate: this.state.rate,
+            amount: this.state.amount,
+            result: this.state.result
+        };
+        addTrade(params).then(response => {
+            console.log(response)
+        });
+        console.log('sent');
+    }
 
     // Populate
     componentDidMount() {
@@ -97,7 +129,6 @@ class Converter extends React.Component {
     const amount = this.state.amount;
     const rate = this.state.rate;
     const currencyList = this.state.currencies;
-    const sellCurrency = this.state.sellCurrency;
     const buyDropDownOpen = this.state.buyDropDownOpen;
     const buyDropDownValue = this.state.buyDropDownValue;
     const sellDropDownOpen = this.state.sellDropDownOpen;
@@ -134,21 +165,19 @@ class Converter extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                                                      <CurrencySelect
+                            <CurrencySelect
                               id={"select_buy"}
                               dropDownOpen={sellDropDownOpen}
                               dropDownValue={sellDropDownValue}
                               currencyList={currencyList}
                               onCurrencyToggle={this.handleSellCurrencyToggle}
                               onCurrencyChange={this.handleSellCurrencySelect}>
-                          </CurrencySelect>
 
+                            </CurrencySelect>
                         </Col>
-
                         <Col>&#x276F;</Col>
                         <Col>{this.state.rate && <h3>{this.state.rate}</h3>}</Col>
                         <Col>&#x276F;</Col>
-
                         <Col>
                         <CurrencySelect
                           id={"select_buy"}
@@ -157,8 +186,7 @@ class Converter extends React.Component {
                           currencyList={currencyList}
                           onCurrencyToggle={this.handleBuyCurrencyToggle}
                           onCurrencyChange={this.handleBuyCurrencySelect}>
-                      </CurrencySelect>
-
+                        </CurrencySelect>
                         </Col>
                     </Row>
                     <Row>
@@ -188,23 +216,22 @@ class Converter extends React.Component {
                         <Col sm={{size: 'auto', offset: 1}}>
                             <Button
                                 color={"primary"}
-                                disabled={(this.state.disable_save) ? "disabled" : ""}
-                                hidden={(this.state.disable_save) ? "disabled" : ""}
+                                disabled={this.state.disable_save}
+                                hidden={this.state.disable_save}
                                 size="lg"
                                 onClick={this.handleSubmit}>Create</Button>
-                        </Col>
-                        <Col>
                         </Col>
                         <Col>
                             <CurrencyInput
                                 value={amount}
                                 onCurrencyInput={this.handleCurrencyInput}>
-
                             </CurrencyInput>
+                        </Col>
+                        <Col>
 
                         </Col>
                         <Col>
-                             <CurrencyResult
+                        <CurrencyResult
                                 amount={amount}
                                 rate={rate}>
                             </CurrencyResult>
@@ -214,12 +241,6 @@ class Converter extends React.Component {
                         </Col>
                     </Row>
                 </Container>
-                <Container>
-                    <Row>
-
-                    </Row>
-                </Container>
-
             </Form>
       </div>
     );

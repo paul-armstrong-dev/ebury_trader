@@ -8,14 +8,12 @@ api = Api()
 
 class StoredTrades(Resource):
 
-    @staticmethod
-    def get():
+    def get(self):
         return jsonify([trade.to_report()
                         for trade in DbUtils.get_model_data(engine_uri=Config.SQLALCHEMY_DATABASE_URI,
                                                             model_name="Trade")])
 
-    @staticmethod
-    def post():
+    def post(self):
         # Parse args
         parser = reqparse.RequestParser()
         parser.add_argument('buy')
