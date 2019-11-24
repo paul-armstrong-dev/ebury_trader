@@ -11,7 +11,7 @@ export function NewTradeButton() {
 
     return (
         <Button color={"primary"} size="lg" onClick={handleClick}>
-            Go home
+            New Trade
         </Button>
     );
 }
