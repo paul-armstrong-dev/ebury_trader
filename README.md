@@ -15,7 +15,8 @@ to do a new project where I can split my time a bit more evenly between front an
 ---
 ### Styling
 - Tried to adhere to AirBnb's React/JSX style guide from here where possible: [React Style Guide](https://github.com/airbnb/javascript/tree/master/react)
-- I usually adhere to a Python "best of best" practises/style guide which was used at RTL and is available here: [Python Style Guide](https://github.com/paul-armstrong-dev/technology_notes/blob/master/python/style_guide/rtl-style-guide.md)
+- For python I just used PyCharms' built in pep-8 inspector. 
+    - I usually adhere to a Python "best of best" practises/style guide which was used at RTL and is available here: [Python Style Guide](https://github.com/paul-armstrong-dev/technology_notes/blob/master/python/style_guide/rtl-style-guide.md)
     - Though I'm not sure I even wrote enough python for this app for the above to be important 
     - I would still encourage to look into the above python standards, specifically the values section, these are things I feel very strongly about
 - Implemented SonarCloud to do some standard checks against the repo
