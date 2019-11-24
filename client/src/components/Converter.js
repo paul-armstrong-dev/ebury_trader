@@ -6,7 +6,17 @@ import {addTrade, getLatestRates} from "./requests";
 import axios from "axios";
 import {CancelTradeButton} from "./buttons/cancel_trade";
 import {Button, Col, Container, Form, Row, FormGroup, Label, Input} from "reactstrap";
+import Popup from "reactjs-popup";
+import { Card, CardImg, CardTitle, CardText, CardDeck, CardSubtitle, CardBody } from 'reactstrap';
+import CustomModal from "./Modal";
+import CurrencyModalButton from "./currency/CurrencyModalButton";
 
+function popup () {
+    return (
+        <Popup trigger={<button> Trigger</button>} position="right center">
+            <div>Yay you saved something!</div>
+        </Popup>)
+}
 
 class Converter extends React.Component {
   constructor(props) {
@@ -124,6 +134,10 @@ class Converter extends React.Component {
     componentDidMount() {
         this.getCurrencyArray()
     }
+    onSaveButtonClick(){
+
+
+    }
 
     render() {
     const amount = this.state.amount;
@@ -145,7 +159,17 @@ class Converter extends React.Component {
                         <Col>
 
                         </Col>
-                        <Col></Col>
+                        <Col>
+                            <Card>
+                                <CardImg top width="100%" alt="Card image cap" />
+                                <CardBody>
+                                    <CardTitle>Javascript</CardTitle>
+                                    <CardSubtitle>Frontend & Backend (Node.js)</CardSubtitle>
+                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
+                                    <CustomModal buttonType={"Javascript"}/>
+                                </CardBody>
+                        </Card>
+                        </Col>
                         <Col></Col>
                     </Row>
                     <Row>
@@ -219,7 +243,13 @@ class Converter extends React.Component {
                                 disabled={this.state.disable_save}
                                 hidden={this.state.disable_save}
                                 size="lg"
-                                onClick={this.handleSubmit}>Create</Button>
+                                onClick={this.handleSubmit}>Create
+                            </Button>
+                        <CustomModal buttonType={"Javascript"}
+                                     color={"primary"}
+                                     disabled={this.state.disable_save}
+                                     hidden={this.state.disable_save}
+                                     onClick={this.handleSubmit}/>
                         </Col>
                         <Col>
                             <CurrencyInput
@@ -228,7 +258,7 @@ class Converter extends React.Component {
                             </CurrencyInput>
                         </Col>
                         <Col>
-
+                            <CurrencyModalButton></CurrencyModalButton>
                         </Col>
                         <Col>
                         <CurrencyResult
