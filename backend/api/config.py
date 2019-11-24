@@ -1,9 +1,9 @@
 import os
 
-
 class Config(object):
-    DEBUG = True
-    TESTING = True
+    """Parent configuration class."""
+    DEBUG = False
+    SECRET = os.getenv('SECRET')
     SQLALCHEMY_DATABASE_URI = f"mysql+mysqlconnector" \
                               f"://{os.environ.get('MYSQL_USER')}" \
                               f":{os.environ.get('MYSQL_PASSWORD')}" \
@@ -12,8 +12,33 @@ class Config(object):
                               f"/{os.environ.get('MYSQL_DATABASE')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Surprisingly important piece of config, flasks jsonify sorts by default,
-    # I don't want this
-    # Table structure sets the output report structure here so if this is removed the columns and
-    # Rows in output won't match
-    JSON_SORT_KEYS = False
+
+class DevelopmentConfig(Config):
+    """Configurations for Development."""
+    DEBUG = True
+
+
+class TestingConfig(Config):
+    """Configurations for Testing, with a separate test database."""
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite://localhost/forexmodels'
+    DEBUG = True
+
+
+class StagingConfig(Config):
+    """Configurations for Staging."""
+    DEBUG = True
+
+
+class ProductionConfig(Config):
+    """Configurations for Production."""
+    DEBUG = False
+    TESTING = False
+
+
+app_config = {
+    'development': DevelopmentConfig,
+    'testing': TestingConfig,
+    'staging': StagingConfig,
+    'production': ProductionConfig,
+}
