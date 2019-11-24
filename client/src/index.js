@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/index.css';
-import 'bootstrap/dist/css/bootstrap.css';
-import * as serviceWorker from './serviceWorker';
-import history from "./components/history";
-import App from './App';
 import {BrowserRouter} from "react-router-dom";
+import App from './App';
+import history from "./components/history";
+import './styles/index.css';
+import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
     <BrowserRouter history={history}>
