@@ -1,5 +1,6 @@
 # Ebury trading app
 
+
 - I have managed to add some fairly boilerplate testing over the weekend, I would really like to work on and make the 
 React test components way more extensive. 
 - If my application is unsuccessful **please** can we still go through this code and discuss; 
@@ -67,14 +68,15 @@ Check example.env file;
   - Unfortunately I have not passed the DB name and port all the way through using the .env files so these need to stay as is.
   - Test environment sets up a sql lite db in Docker, all others create MariaDB
   - For environment configuration check Backend/Config, but should only need to choose from testing or production. 
-- If the connect fails based on a use error please rerun the docker compose command; in testing I've found that for some reason docker compose does not successfully interpolate the trader-db name all the way through the system(specifically the Client/Config.py), rerunning the compose gets the i.p. in its place as it should
+- If the connect fails based on a use error please rerun the docker compose command; 
+- **in testing I've found that for some reason docker compose does not successfully interpolate the trader-db name all the way through the system(specifically the Client/Config.py),
+ rerunning the compose gets the i.p. in its place as it should**
+    - I would have liked to spend more time debugging the above, if you're aware of the issue / solution I'd really like to find out. 
 - Everything is containerized from the client, backend to the database.
 - So all you need is Docker installed, and then you can run :
-
 ```
 docker-compose up --build -d
 ```
-
 And your app will be up on the **port 3000** !
 
 ##### Reloading Database configuration

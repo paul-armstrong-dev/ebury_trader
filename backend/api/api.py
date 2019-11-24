@@ -9,12 +9,9 @@ api = Api()
 class StoredTrades(Resource):
 
     def get(self):
-        trades = DbUtils.get_model_data(engine_uri=Config.SQLALCHEMY_DATABASE_URI,
-                                        model_name="Trade")
-        if len(trades)>0:
-            return jsonify(trade.to_report() for trade in trades)
-        else:
-            return jsonify("No trades found")
+        return jsonify([trade.to_report()
+                        for trade in DbUtils.get_model_data(engine_uri=Config.SQLALCHEMY_DATABASE_URI,
+                                                            model_name="Trade")])
 
     def post(self):
         # Parse args
