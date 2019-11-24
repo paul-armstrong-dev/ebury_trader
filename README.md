@@ -1,7 +1,8 @@
 # Ebury trading app
 
 ---- 
-- I am also still to add tests to this App, this will be complete by **Monday**  
+- I have managed to add some fairly boilerplate testing over the weekend, I would really like to work on and make the 
+React test components way more extensive.  
 - If my application is unsuccessful **please** can we still go through this code and discuss; 
 - There are a few points that I am interested to find out how to do these things better (see client Dockerfile),
 If you have already worked it out, I'd love to hear how, if not maybe we could discuss the better solution 
@@ -15,7 +16,9 @@ to do a new project where I can split my time a bit more evenly between front an
 ---
 ### Styling
 - Tried to adhere to AirBnb's React/JSX style guide from here where possible: [React Style Guide](https://github.com/airbnb/javascript/tree/master/react)
-- For python I just used PyCharms' built in pep-8 inspector. 
+    - I also used a ui-template kit from the good people here: [UI Kit](https://www.creative-tim.com/product/argon-dashboard-react)
+    - And was trying to stick with [React Strap components](https://reactstrap.github.io/) for consistency
+- For python I just used PyCharms' built in pep-8 inspector.
     - I usually adhere to a Python "best of best" practises/style guide which was used at RTL and is available here: [Python Style Guide](https://github.com/paul-armstrong-dev/technology_notes/blob/master/python/style_guide/rtl-style-guide.md)
     - Though I'm not sure I even wrote enough python for this app for the above to be important 
     - I would still encourage to look into the above python standards, specifically the values section, these are things I feel very strongly about
@@ -62,7 +65,9 @@ ReactJS call the REST API and display it !
 Check example.env file;
 - Rename to .env
 - fill in all params or keep default; 
-    - Unfortunately I have not passed the DB name and port all the way through using the .env files so these need to stay as is.
+  - Unfortunately I have not passed the DB name and port all the way through using the .env files so these need to stay as is.
+  - Test environment sets up a sql lite db in Docker, all others create MariaDB
+  - For environment configuration check Backend/Config, but should only need to choose from testing or production. 
 - If the connect fails based on a use error please rerun the docker compose command; in testing I've found that for some reason docker compose does not successfully interpolate the trader-db name all the way through the system(specifically the Client/Config.py), rerunning the compose gets the i.p. in its place as it should
 - Everything is containerized from the client, backend to the database.
 - So all you need is Docker installed, and then you can run :
