@@ -6,7 +6,6 @@ import {getTrades} from "./requests"
 class StoredTradesTable extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             trades: []
         };
