@@ -1,0 +1,7 @@
+.git
+.idea
+*.gz
+**/node_modules/
+**/coverage/
+**/bundles
+**/.cache
