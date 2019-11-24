@@ -36,23 +36,7 @@ class DbUtils:
         return engine
 
     @staticmethod
-    def get_model_data(session, model_name):
-        """
-            :param model_name:
-            :return: query_results
-        """
-        model = getattr(ForexModels, model_name)
-
-        query_results = session.query(model)
-        if query_results.count() == 0:
-            logger.error("No results")
-            session.close()
-        else:
-            session.close()
-            return query_results.all()
-
-    @staticmethod
-    def get_model_data_engine(engine_uri, model_name):
+    def get_model_data(engine_uri, model_name):
         """
             :param model_name:
             :return: query_results
