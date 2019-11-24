@@ -37,22 +37,6 @@ class DbUtils:
         return engine
 
     @staticmethod
-    def populate_currency_dimension(engine):
-        """
-            Function here to read data from CSV into curr dimension on first run,
-            Only for initial populate of data
-            Passing engine instead of session because we don't need the session
-            to read the data in from CSV"""
-
-        # Thought about using the CSV library but would have needed to write way more code for this,
-        # And without performance bench marks I did not see that value in that over using pandas.
-        df = pd.read_csv('./data/currency.csv')
-        s = Session(bind=engine)
-        s.bulk_insert_mappings(ForexModels.Currency, df.to_dict(orient="records"))
-        s.commit()
-        s.close()
-
-    @staticmethod
     def get_model_data(session, model_name):
         """
             :param model_name:
@@ -87,26 +71,27 @@ class DbUtils:
             return query_results.all()
 
     @staticmethod
-    def store_new_trade(session,
-                        purchase_amount,
-                        purchase_currency,
+    def store_new_trade(engine_uri,
+                        buy_amount,
+                        buy_currency,
                         sale_amount,
                         sale_currency,
                         rate):
         """
 
-        :param session:
+        :param engine_uri:
         :param purchase_amount:
         :param purchase_currency:
         :param sale_amount:
         :param sale_currency:
         :return:
         """
-
+        engine = create_engine(engine_uri, echo=True)
+        session = Session(bind=engine)
         trade = ForexModels.Trade(rate=rate,
-                                  purchase_amount=purchase_amount,
+                                  buy_amount=buy_amount,
                                   sale_amount=sale_amount,
-                                  purchase_currency_code=purchase_currency,
+                                  buy_currency_code=buy_currency,
                                   sale_currency_code=sale_currency)
 
         session.add(trade)
@@ -116,11 +101,9 @@ class DbUtils:
 
     @staticmethod
     def add_test_trade(engine_uri):
-        engine = create_engine(engine_uri, echo=True)
-        s = Session(bind=engine)
-        DbUtils.store_new_trade(session=s,
-                                purchase_amount=4444,
-                                purchase_currency="EUR",
+        DbUtils.store_new_trade(engine_uri=engine_uri,
+                                buy_amount=4444,
+                                buy_currency="EUR",
                                 sale_amount=122,
                                 sale_currency="GBP",
                                 rate=1.2)
