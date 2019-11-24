@@ -6,27 +6,20 @@ import {addTrade, getLatestRates} from "./requests";
 import axios from "axios";
 import {CancelTradeButton} from "./buttons/cancel_trade";
 import {Button, Col, Container, Form, Row, FormGroup, Label, Input} from "reactstrap";
-import Popup from "reactjs-popup";
-import { Card, CardImg, CardTitle, CardText, CardDeck, CardSubtitle, CardBody } from 'reactstrap';
-import CustomModal from "./Modal";
 import CurrencyModalButton from "./currency/CurrencyModalButton";
 
-function popup () {
-    return (
-        <Popup trigger={<button> Trigger</button>} position="right center">
-            <div>Yay you saved something!</div>
-        </Popup>)
-}
 
 class Converter extends React.Component {
   constructor(props) {
     super(props);
     this.handleCurrencyInput = this.handleCurrencyInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
     this.handleBuyCurrencySelect = this.handleBuyCurrencySelect.bind(this);
     this.handleBuyCurrencyToggle = this.handleBuyCurrencyToggle.bind(this);
     this.handleSellCurrencyToggle = this.handleSellCurrencyToggle.bind(this);
     this.handleSellCurrencySelect = this.handleSellCurrencySelect.bind(this);
+    this.handleModalToggle = this.handleModalToggle.bind(this);
 
     this.getRates = this.getRates.bind(this);
 
@@ -42,8 +35,9 @@ class Converter extends React.Component {
         sellDropDownValue: "",
         result: "",
         disable_input: true,
-        disable_save: true
+        disable_save: true,
 
+        modal: false
     };
   }
 
@@ -59,7 +53,11 @@ class Converter extends React.Component {
             });
         this.getCurrencyResult();
   }
-
+  handleModalToggle(event){
+      this.setState({
+          modal: !this.state.modal
+      })
+  };
 
   handleBuyCurrencyToggle (event){
       this.setState({buyDropDownOpen: !this.state.buyDropDownOpen});
@@ -117,6 +115,7 @@ class Converter extends React.Component {
         }
     };
     handleSubmit() {
+
         const params = {
             buy: this.state.buyCurrency,
             sell: this.state.sellCurrency,
@@ -135,8 +134,16 @@ class Converter extends React.Component {
         this.getCurrencyArray()
     }
     onSaveButtonClick(){
-
-
+        const params = {
+            buy: this.state.buyCurrency,
+            sell: this.state.sellCurrency,
+            rate: this.state.rate,
+            amount: this.state.amount,
+            result: this.state.result
+        };
+        addTrade(params).then(response => {
+            console.log("Successfully stored trade")
+        });
     }
 
     render() {
@@ -160,15 +167,6 @@ class Converter extends React.Component {
 
                         </Col>
                         <Col>
-                            <Card>
-                                <CardImg top width="100%" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Javascript</CardTitle>
-                                    <CardSubtitle>Frontend & Backend (Node.js)</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <CustomModal buttonType={"Javascript"}/>
-                                </CardBody>
-                        </Card>
                         </Col>
                         <Col></Col>
                     </Row>
@@ -245,11 +243,6 @@ class Converter extends React.Component {
                                 size="lg"
                                 onClick={this.handleSubmit}>Create
                             </Button>
-                        <CustomModal buttonType={"Javascript"}
-                                     color={"primary"}
-                                     disabled={this.state.disable_save}
-                                     hidden={this.state.disable_save}
-                                     onClick={this.handleSubmit}/>
                         </Col>
                         <Col>
                             <CurrencyInput
@@ -258,7 +251,10 @@ class Converter extends React.Component {
                             </CurrencyInput>
                         </Col>
                         <Col>
-                            <CurrencyModalButton></CurrencyModalButton>
+                            <CurrencyModalButton
+                                isOpen={this.state.modal}
+                                handleModalToggle={this.handleModalToggle}
+                                onSaveButtonClick={this.onSaveButtonClick}></CurrencyModalButton>
                         </Col>
                         <Col>
                         <CurrencyResult

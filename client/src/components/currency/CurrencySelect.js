@@ -16,7 +16,7 @@ class CurrencySelect extends React.Component {
     }
 
     handleChange(event) {
-        this.props.handleSubmit(event)
+        this.props.onCurrencyChange(event)
     }
 
 

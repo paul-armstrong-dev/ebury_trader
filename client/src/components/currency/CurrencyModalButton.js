@@ -1,40 +1,42 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { ViewTradesButton} from "../buttons/view_trades"
+import {NewTradeButton} from "../buttons/new_trade";
 
 class CurrencyModalButton extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            modal: false
-        };
 
         this.toggle = this.toggle.bind(this);
+        this.handleCreateButtonClick = this.handleCreateButtonClick.bind(this);
+
     }
 
-    toggle() {
-        this.setState({
-            modal: !this.state.modal
-        });
+    toggle(event) {
+        this.props.handleModalToggle();
     }
 
-    handleClick(event){
+
+    handleCreateButtonClick(event){
+        this.props.handleModalToggle();
         this.props.onSaveButtonClick(event)
     }
+
 
     render(){
         return (
             <div className="div-inline">
-                <ViewTradesButton color={"secondary"} onClick={this.toggle}></ViewTradesButton>
-                <Button color={"secondary"} onClick={this.toggle}>{this.props.buttonType} button</Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                    <ModalHeader toggle={this.toggle}>{this.props.buttonType} Modal Title</ModalHeader>
+                <Button color={"primary"} onClick={this.handleCreateButtonClick}>Create New Trade</Button>
+                <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>{this.props.buttonType} Success </ModalHeader>
                     <ModalBody>
-                        This is a modal window thrown by the {this.props.buttonType} button.
+                        You have successfully stored a new trade, would you like to view the stored trades or create another?
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.toggle}>Go it!</Button>
-                    <ViewTradesButton color="primary" onClick={this.toggle}></ViewTradesButton>
+                         <Button color={"primary"} size="lg" onClick={this.toggle}>
+                             New Trade
+                         </Button>
+                        <ViewTradesButton onClick={this.toggle}></ViewTradesButton>
                     </ModalFooter>
                 </Modal>
             </div>
