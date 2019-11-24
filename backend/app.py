@@ -17,7 +17,7 @@ def create_app(config_name):
     config=app_config[config_name]
     web_app.config.from_object(config)
     register_extensions(web_app)
-    # DbUtils.recreate_db(config)
+    DbUtils.recreate_db(config.SQLALCHEMY_DATABASE_URI)
     return web_app
 
 
@@ -32,7 +32,6 @@ def register_extensions(web_app):
 
 
 if __name__ == '__main__':
-    import os
     config_name = os.environ.get("APP_ENVIRONMENT")
     app = create_app(config_name)
     app.run(host='0.0.0.0', port=80, threaded=True)
