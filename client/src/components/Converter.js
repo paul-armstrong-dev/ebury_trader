@@ -51,7 +51,7 @@ class Converter extends React.Component {
                 amount: amount,
                 disable_save: false,
             });
-        this.getCurrencyResult();
+        this.getCurrencyResult(amount);
   }
   handleModalToggle(event){
       this.setState({
@@ -78,9 +78,9 @@ class Converter extends React.Component {
   }
 
 
-    getCurrencyResult() {
-    const result = this.state.amount * this.state.rate;
-    this.setState({result: result});
+    getCurrencyResult(amount) {
+        const result = amount * this.state.rate;
+        this.setState({result: result});
     }
 
   handleSellCurrencySelect (event)  {
@@ -160,33 +160,16 @@ class Converter extends React.Component {
                 <Container>
                     <Row>
                         <Col>
-                            <h2>New Trade<span role="img" aria-label="">&#x1f4b5;</span></h2>
-                        </Col>
-                        <Col></Col>
-                        <Col>
-
-                        </Col>
-                        <Col>
-                        </Col>
-                        <Col></Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            Sell currency
-                        </Col>
-                        <Col></Col>
-                        <Col>
-                            Rate
-                        </Col>
-                        <Col></Col>
-                        <Col>
-                            Buy currency
+                            <Label>
+                                <h2>New Trade<span role="img">&#x1f4b5;</span></h2>
+                            </Label>
                         </Col>
                     </Row>
                 </Container>
                 <Container>
                     <Row>
                         <Col>
+                            <Label>Sell currency:
                             <CurrencySelect
                               id={"select_buy"}
                               dropDownOpen={sellDropDownOpen}
@@ -194,73 +177,62 @@ class Converter extends React.Component {
                               currencyList={currencyList}
                               onCurrencyToggle={this.handleSellCurrencyToggle}
                               onCurrencyChange={this.handleSellCurrencySelect}>
-
                             </CurrencySelect>
+                            </Label>
                         </Col>
-                        <Col>&#x276F;</Col>
-                        <Col>{this.state.rate && <h3>{this.state.rate}</h3>}</Col>
                         <Col>&#x276F;</Col>
                         <Col>
-                        <CurrencySelect
-                          id={"select_buy"}
-                          dropDownOpen={buyDropDownOpen}
-                          dropDownValue={buyDropDownValue}
-                          currencyList={currencyList}
-                          onCurrencyToggle={this.handleBuyCurrencyToggle}
-                          onCurrencyChange={this.handleBuyCurrencySelect}>
-                        </CurrencySelect>
+                            <Label>Rate: {<h3>{this.state.rate}</h3>}
+                            </Label>
                         </Col>
+                        <Col>&#x276F;</Col>
+                    <Col>
+                        <Label>Buy currency:
+                            <CurrencySelect
+                                id={"select_buy"}
+                                dropDownOpen={buyDropDownOpen}
+                                dropDownValue={buyDropDownValue}
+                                currencyList={currencyList}
+                                onCurrencyToggle={this.handleBuyCurrencyToggle}
+                                onCurrencyChange={this.handleBuyCurrencySelect}>
+                            </CurrencySelect>
+                        </Label>
+                    </Col>
                     </Row>
                     <Row>
                         <Col>
-                            Sell amount
+                            <Label> Sell Amount:
+                                <CurrencyInput
+                                    value={amount}
+                                    onCurrencyInput={this.handleCurrencyInput}>
+                                </CurrencyInput>
+                            </Label>
                         </Col>
-                        <Col>
-                        </Col>
-                        <Col>
-                            Buy amount
-                        </Col>
-                    </Row>
-                    <Row/>
-                    <Row>
-                        <Col></Col>
                         <Col></Col>
                         <Col>
                             <Col>
-                                <Label name={"rate"}>
-                                    {this.state.result && <h3>{this.state.result}</h3>}
+                                <Label> Buy Amount:
+                                <CurrencyResult
+                                    amount={amount}
+                                    rate={rate}>
+                                </CurrencyResult>
                                 </Label>
                             </Col>
                         </Col>
                     </Row>
-
                     <Row>
-                        <Col sm={{size: 'auto', offset: 1}}>
-                            <Button
-                                color={"primary"}
-                                disabled={this.state.disable_save}
-                                hidden={this.state.disable_save}
-                                size="lg"
-                                onClick={this.handleSubmit}>Create
-                            </Button>
-                        </Col>
-                        <Col>
-                            <CurrencyInput
-                                value={amount}
-                                onCurrencyInput={this.handleCurrencyInput}>
-                            </CurrencyInput>
-                        </Col>
                         <Col>
                             <CurrencyModalButton
+                                disabled={this.state.disable_save}
+                                hidden={this.state.disable_save}
                                 isOpen={this.state.modal}
                                 handleModalToggle={this.handleModalToggle}
                                 onSaveButtonClick={this.onSaveButtonClick}></CurrencyModalButton>
                         </Col>
                         <Col>
-                        <CurrencyResult
-                                amount={amount}
-                                rate={rate}>
-                            </CurrencyResult>
+                        </Col>
+                        <Col>
+
                         </Col>
                         <Col>
                             <CancelTradeButton/>

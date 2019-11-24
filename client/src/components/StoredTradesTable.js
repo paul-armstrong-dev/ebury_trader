@@ -61,7 +61,7 @@ class StoredTradesTable extends React.Component {
                                 <h1>Booked trades</h1>
                             </Col>
                             <Col>
-                                <NewTradeButton>New trade</NewTradeButton>
+
                             </Col>
                         </Row>
 

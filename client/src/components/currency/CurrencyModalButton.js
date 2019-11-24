@@ -26,7 +26,13 @@ class CurrencyModalButton extends React.Component {
     render(){
         return (
             <div className="div-inline">
-                <Button color={"primary"} onClick={this.handleCreateButtonClick}>Create New Trade</Button>
+                <Button color={"primary"}
+                        onClick={this.handleCreateButtonClick}
+                        disabled={this.props.disabled}
+                        hidden={this.props.hidden}
+                >
+                    Create New Trade
+                </Button>
                 <Modal isOpen={this.props.isOpen} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>{this.props.buttonType} Success </ModalHeader>
                     <ModalBody>
