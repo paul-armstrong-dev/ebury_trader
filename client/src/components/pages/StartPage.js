@@ -1,11 +1,11 @@
 import React from 'react';
-import {NewTradeButton} from "../buttons/new_trade";
+import {StartButton} from "../buttons/start";
 
 class StartPage extends React.Component {
     render() {
         return (
             <div>
-                <NewTradeButton/>
+                <StartButton/>
             </div>);
     }
 }

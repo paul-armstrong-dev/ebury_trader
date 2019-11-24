@@ -7,22 +7,29 @@ from flask_cors import CORS
 
 
 def create_app(config):
-    app = Flask(__name__)
-    CORS(app)
-    app.config.from_object(config)
-    register_extensions(app)
+    """
 
-    return app
+    :param config:
+    :return:
+    """
+    web_app = Flask(__name__)
+    CORS(web_app)
+    web_app.config.from_object(config)
+    register_extensions(web_app)
+    return web_app
 
 
-def register_extensions(app):
-    api.init_app(app)
-    db.init_app(app)
+def register_extensions(web_app):
+    """
+
+    :param web_app:
+    :return:
+    """
+    api.init_app(web_app)
+    db.init_app(web_app)
     DbUtils.recreate_db(Config.SQLALCHEMY_DATABASE_URI)
 
 
-# Run the application
 if __name__ == '__main__':
     app = create_app(Config)
-    # DbUtils.add_test_trade(Config.SQLALCHEMY_DATABASE_URI)
     app.run(host='0.0.0.0', port=80, threaded=True)

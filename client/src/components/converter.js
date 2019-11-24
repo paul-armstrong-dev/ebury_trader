@@ -4,6 +4,8 @@ import {Button, Col, Container, Form, Row} from "reactstrap";
 import Label from "reactstrap/es/Label";
 import {addTrade} from "./requests"
 import {getLatestRates} from "./requests"
+import {NewTradeButton} from "./buttons/new_trade";
+import {CancelTradeButton} from "./buttons/cancel_trade";
 
 class Converter extends React.Component {
     constructor(props) {
@@ -13,17 +15,19 @@ class Converter extends React.Component {
             result: null,
             buyCurrency: "",
             sellCurrency: "",
-            amount: 0,
+            amount: null,
             rate: 0.0,
             currencies: [],
-            disable_input: true
+            disable_input: true,
+            disable_save: true
         };
         this.handleSubmit = this.handleSubmit.bind(this);
-
+        this.convertHandler = this.convertHandler.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
     }
 
 
-    handleSubmit(data) {
+    handleSubmit() {
         const params = {
             buy: this.state.buyCurrency,
             sell: this.state.sellCurrency,
@@ -72,16 +76,24 @@ class Converter extends React.Component {
         if (this.state.amount !== 0) {
             const result = this.state.amount * this.state.rate;
             this.setState({result: result.toFixed(5)});
+            this.setState({disable_save: false})
         }
     };
 
+    inputHandler = (event) => {
+        if (this.state.amount !== 0) {
+            this.setState({amount: event.target.value});
+            const result = this.state.amount * this.state.rate;
+            this.setState({result: result});
+        }
+    };
     // Handle change
     convertHandler = (event) => {
         if (event.target) {
             // most active output first
             if (event.target.name === "in_amount") {
-                this.setState({amount: event.target.value});
-                this.calculateResult()
+                this.setState({amount: event.target.value}, this.calculateResult());
+
             }
             else if (event.target.name === "sell") {
 
@@ -112,7 +124,7 @@ class Converter extends React.Component {
 
     render() {
         return (
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
                 <Container>
                     <Row>
                         <Col>
@@ -144,7 +156,7 @@ class Converter extends React.Component {
                         <Col>
                             <select
                                 name="sell"
-                                onChange={event => this.convertHandler(event)}
+                                onChange={this.convertHandler}
                                 value={this.state.sellCurrency}
                                 placeholder={"Select currency"}>
                                 >
@@ -158,15 +170,16 @@ class Converter extends React.Component {
                         <Col>{this.state.rate && <h3>{this.state.rate}</h3>}</Col>
                         <Col>&#x276F;</Col>
 
-                        <Col><select
+                        <Col>
+                            <select
                             name="buy"
-                            onChange={event => this.convertHandler(event)}
+                            onChange={this.convertHandler}
                             value={this.state.buyCurrency}
                             placeholder={"Select currency"}>
                             {this.state.currencies.map(cur => (
                                 <option key={cur}>{cur}</option>
                             ))}
-                        </select>
+                            </select>
                         </Col>
                     </Row>
                     <Row>
@@ -187,7 +200,7 @@ class Converter extends React.Component {
                                 name="in_amount"
                                 type="number"
                                 value={this.state.amount}
-                                onChange={event => this.convertHandler(event)}
+                                onChange={this.convertHandler}
                                 disabled={(this.state.disable_input) ? "disabled" : ""}
                             />
                         </Col>
@@ -204,14 +217,19 @@ class Converter extends React.Component {
 
                     <Row>
                         <Col sm={{size: 'auto', offset: 1}}>
-                            <Button color={"primary"} size="lg" onClick={this.handleSubmit}>Create</Button>
+                            <Button
+                                color={"primary"}
+                                disabled={(this.state.disable_save) ? "disabled" : ""}
+                                hidden={(this.state.disable_save) ? "disabled" : ""}
+                                size="lg"
+                                onClick={this.handleSubmit}>Create</Button>
                         </Col>
                         <Col>
                         </Col>
                         <Col></Col>
                         <Col></Col>
                         <Col>
-                            <Button color={"primary"} size="lg">Cancel</Button>
+                            <CancelTradeButton/>
                         </Col>
                     </Row>
                 </Container>
