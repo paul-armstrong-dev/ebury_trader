@@ -6,13 +6,16 @@ from .model_handler import DbUtils
 api = Api()
 
 
-
 class StoredTrades(Resource):
-    def get(self):
-        return jsonify([trade.toReport() for trade in DbUtils.get_model_data_engine(Config.SQLALCHEMY_DATABASE_URI,
-                                                                                     "Trade")])
 
-    def post(self):
+    @staticmethod
+    def get():
+        return jsonify([trade.to_report()
+                        for trade in DbUtils.get_model_data(engine_uri=Config.SQLALCHEMY_DATABASE_URI,
+                                                            model_name="Trade")])
+
+    @staticmethod
+    def post():
         # Parse args
         parser = reqparse.RequestParser()
         parser.add_argument('buy')

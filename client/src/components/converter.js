@@ -27,7 +27,7 @@ class Converter extends React.Component {
     }
 
 
-    handleSubmit(data) {
+    handleSubmit() {
         const params = {
             buy: this.state.buyCurrency,
             sell: this.state.sellCurrency,
@@ -156,7 +156,7 @@ class Converter extends React.Component {
                         <Col>
                             <select
                                 name="sell"
-                                onChange={event => this.convertHandler(event)}
+                                onChange={this.convertHandler}
                                 value={this.state.sellCurrency}
                                 placeholder={"Select currency"}>
                                 >
@@ -173,7 +173,7 @@ class Converter extends React.Component {
                         <Col>
                             <select
                             name="buy"
-                            onChange={event => this.convertHandler(event)}
+                            onChange={this.convertHandler}
                             value={this.state.buyCurrency}
                             placeholder={"Select currency"}>
                             {this.state.currencies.map(cur => (
@@ -200,7 +200,7 @@ class Converter extends React.Component {
                                 name="in_amount"
                                 type="number"
                                 value={this.state.amount}
-                                onChange={event => this.convertHandler(event)}
+                                onChange={this.convertHandler}
                                 disabled={(this.state.disable_input) ? "disabled" : ""}
                             />
                         </Col>
@@ -217,10 +217,12 @@ class Converter extends React.Component {
 
                     <Row>
                         <Col sm={{size: 'auto', offset: 1}}>
-                            <Button disabled={(this.state.disable_save) ? "disabled" : ""}
-                                    hidden={(this.state.disable_save) ? "disabled" : ""}
-                                    size="lg"
-                                    onClick={this.handleSubmit}>Create</Button>
+                            <Button
+                                color={"primary"}
+                                disabled={(this.state.disable_save) ? "disabled" : ""}
+                                hidden={(this.state.disable_save) ? "disabled" : ""}
+                                size="lg"
+                                onClick={this.handleSubmit}>Create</Button>
                         </Col>
                         <Col>
                         </Col>

@@ -32,14 +32,17 @@ class DbUtils:
         engine = create_engine(engine_uri, echo=True)
         logger.info("Engine recreated")
         ForexModels.recreate_all_models(engine)
-        # DbUtils.populate_currency_dimension(engine)
         return engine
 
     @staticmethod
     def get_model_data(engine_uri, model_name):
         """
-            :param model_name:
-            :return: query_results
+            Returns model data from EngineURI(full conn string) based on Name in Forex models;
+
+        :param engine_uri:
+        :param engine_uri: Full connection string for engine, included from Config
+        :param model_name: Must be in ForexModels.*
+        :return:
         """
         engine = create_engine(engine_uri, echo=True)
         s = Session(bind=engine)
@@ -63,10 +66,11 @@ class DbUtils:
         """
 
         :param engine_uri:
-        :param purchase_amount:
-        :param purchase_currency:
+        :param buy_amount:
+        :param buy_currency:
         :param sale_amount:
         :param sale_currency:
+        :param rate:
         :return:
         """
         engine = create_engine(engine_uri, echo=True)

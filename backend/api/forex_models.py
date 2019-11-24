@@ -40,7 +40,7 @@ class ForexModels:
         created_date_time = Column(DateTime(timezone=True), server_default=func.now())
         table_status = Column(String(20), nullable=False, server_default="New")
 
-        def toReport(self):
+        def to_report(self):
             """ Simple function for structuring data according to spec"""
             return {"trade_id": self.trade_id,
                     "Sell_CCY": self.sale_currency_code,

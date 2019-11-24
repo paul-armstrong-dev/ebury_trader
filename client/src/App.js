@@ -5,9 +5,9 @@ import Routes from "./components/Routes";
 
 const App = () => (
     <div className="App">
-        <Header/>
+        <Header>
+        </Header>
         <Fragment>
-
             <main className="my-lg-2 py-lg-7">
                 <Routes/>
             </main>
