@@ -7,7 +7,7 @@ services:
     image: mariadb:10.3
     restart: always
     env_file:
-      - mysql-credentials.env
+      - .env.test
     volumes:
       - ./db:/docker-entrypoint-initdb.d/:ro
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
@@ -20,7 +20,7 @@ services:
     ports:
       - "5000:80"
     env_file:
-      - mysql-credentials.env
+      - .env.test
     volumes:
       - "./backend:/app"
     depends_on:
