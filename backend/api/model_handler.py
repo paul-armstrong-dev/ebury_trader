@@ -1,4 +1,3 @@
-import pandas as pd
 from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
