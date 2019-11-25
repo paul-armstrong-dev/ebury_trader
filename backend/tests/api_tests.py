@@ -2,6 +2,7 @@ import unittest
 from ..app import create_app
 from ..api.forex_models import db
 
+TRADES_ENDPOINT = '/trades/'
 
 class ForexTraderApiTestCase(unittest.TestCase):
     """This class represents the forex trader API test cases"""
@@ -24,15 +25,15 @@ class ForexTraderApiTestCase(unittest.TestCase):
 
     def test_trade_creation(self):
         """Test API can create a trade list (POST request)"""
-        res = self.client().post('/trades/', data=self.test_record)
+        res = self.client().post(TRADES_ENDPOINT, data=self.test_record)
         self.assertEqual(res.status_code, 201)
         self.assertIn('AUD', str(res.data))
 
     def test_api_can_get_all_trades(self):
         """Test API can get a trade list (GET request)."""
-        res = self.client().post('/trades/', data=self.test_record)
+        res = self.client().post(TRADES_ENDPOINT, data=self.test_record)
         self.assertEqual(res.status_code, 201)
-        res = self.client().get('/trades/')
+        res = self.client().get(TRADES_ENDPOINT)
         self.assertEqual(res.status_code, 200)
         self.assertIn('AUD', str(res.data))
 
