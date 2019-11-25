@@ -35,6 +35,7 @@ to do a new project where I can split my time a bit more evenly between front an
     bit more before committing to it but thought that finishing this was more important
     - Really really want to move everything into custom components, think the actually converter page is way too messy,
     but again, just what I could finish with a week of dev. 
+    - I'm also aware I left out some input validation, I rewrote an extensive input validation suite (this was the JS I did 4 years ago), so this is definitely something I understand, but without any real business requirements I thought it more important to structure the app logically correctly   
 ### Flask API
 - Kept things very simple here
 - Probably ended up removing more code than I added, 
