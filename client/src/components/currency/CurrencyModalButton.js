@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { ViewTradesButton} from "../buttons/view_trades"
-import {NewTradeButton} from "../buttons/new_trade";
 
 class CurrencyModalButton extends React.Component {
     constructor(props) {
