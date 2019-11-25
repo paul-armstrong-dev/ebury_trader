@@ -12,6 +12,7 @@ services:
       - ./db:/docker-entrypoint-initdb.d/:ro
     command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
 
+
   flask-middleware:
     container_name: trader-backend
     build:
