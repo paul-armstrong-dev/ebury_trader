@@ -15,16 +15,26 @@ class DbUtils:
     @staticmethod
     def get_or_create(session, model, **kwargs):
         """ Here to managed dimension mapping """
+        logger.info(f"Getting data from {model}")
         try:
             return session.query(model).filter_by(**kwargs).one()
         except NoResultFound:
+            logger.warning(f"No data found, will add new model mapping")
             try:
                 with session.begin_nested():
-                    instance = model(**kwargs)
-                    session.add(instance)
+                    instance = DbUtils.add_instance(session, model, **kwargs)
                     return instance
             except IntegrityError:
                 return None
+
+    @staticmethod
+    def add_instance(session, model, **kwargs):
+        logger.info(f"Adding new instance")
+        instance = model(**kwargs)
+        session.add(instance)
+        session.commit()
+        logger.success(f"New instance added")
+        return instance
 
     @staticmethod
     def recreate_db(engine_uri):
@@ -81,9 +91,7 @@ class DbUtils:
                                   buy_currency_code=buy_currency,
                                   sale_currency_code=sale_currency)
 
-        session.add(trade)
-        session.commit()
-        session.close()
+        DbUtils.add_instance(session, model=trade)
         return True
 
     @staticmethod
