@@ -72,6 +72,9 @@ Check example.env file;
 - **in testing I've found that for some reason docker compose does not successfully interpolate the trader-db name all the way through the system(specifically the Client/Config.py),
  rerunning the compose gets the i.p. in its place as it should**
     - I would have liked to spend more time debugging the above, if you're aware of the issue / solution I'd really like to find out. 
+    - Found that this is actually just a sequencing issue; will be resolved through one of these tools:
+        - [Mongo DB Wait](https://dev.to/hugodias/wait-for-mongodb-to-start-on-docker-3h8b)
+        - [Bash wait for](https://github.com/vishnubob/wait-for-it)
 - Everything is containerized from the client, backend to the database.
 - So all you need is Docker installed, and then you can run :
 ```
