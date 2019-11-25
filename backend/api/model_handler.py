@@ -91,6 +91,7 @@ class DbUtils:
                              sale_amount=sale_amount,
                              buy_currency_code=buy_currency,
                              sale_currency_code=sale_currency)
+        session.close()
         return True
 
     @staticmethod
