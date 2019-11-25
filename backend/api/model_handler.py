@@ -85,13 +85,12 @@ class DbUtils:
         """
         engine = create_engine(engine_uri, echo=True)
         session = Session(bind=engine)
-        trade = ForexModels.Trade(rate=rate,
-                                  buy_amount=buy_amount,
-                                  sale_amount=sale_amount,
-                                  buy_currency_code=buy_currency,
-                                  sale_currency_code=sale_currency)
-
-        DbUtils.add_instance(session, model=trade)
+        DbUtils.add_instance(session,
+                             model=ForexModels.Trade,
+                             rate=rate,buy_amount=buy_amount,
+                             sale_amount=sale_amount,
+                             buy_currency_code=buy_currency,
+                             sale_currency_code=sale_currency)
         return True
 
     @staticmethod
