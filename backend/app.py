@@ -35,9 +35,10 @@ def register_extensions(web_app):
     db.init_app(web_app)
     logger.info("Extensions registered")
 
+
 # Loguru function, centralizes logging and provides better exceptions
-with logger.catch():
-    if __name__ == '__main__':
-        config_name = os.environ.get("APP_ENVIRONMENT")
-        app = create_app(config_name)
-        app.run(host='0.0.0.0', port=80, threaded=True)
+#with logger.catch():
+if __name__ == '__main__':
+    config_name = os.environ.get("APP_ENVIRONMENT")
+    app = create_app(config_name)
+    app.run(host='0.0.0.0', port=80, threaded=True)
