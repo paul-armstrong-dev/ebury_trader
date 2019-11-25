@@ -5,7 +5,7 @@ import CurrencySelect from "./currency/CurrencySelect";
 import {addTrade, getLatestRates} from "./requests";
 import axios from "axios";
 import {CancelTradeButton} from "./buttons/cancel_trade";
-import {Button, Col, Container, Form, Row, FormGroup, Label, Input} from "reactstrap";
+import {Col, Container, Form, Row, Label} from "reactstrap";
 import CurrencyModalButton from "./currency/CurrencyModalButton";
 
 
