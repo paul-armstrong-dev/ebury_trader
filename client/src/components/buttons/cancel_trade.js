@@ -10,7 +10,7 @@ export function CancelTradeButton() {
     }
 
     return (
-        <Button color={"primary"} size="lg" onClick={handleClick}>
+        <Button className="cancel-trade button" color={"primary"} size="lg" onClick={handleClick}>
             Cancel
         </Button>
     );

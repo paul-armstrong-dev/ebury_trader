@@ -201,7 +201,7 @@ class Converter extends React.Component {
                     </Row>
                     <Row>
                         <Col>
-                            <Label> Sell Amount:
+                            <Label className="sales-label sell"> Sell Amount:
                                 <CurrencyInput
                                     value={amount}
                                     onCurrencyInput={this.handleCurrencyInput}>
@@ -211,7 +211,7 @@ class Converter extends React.Component {
                         <Col></Col>
                         <Col>
                             <Col>
-                                <Label> Buy Amount:
+                                <Label className="sales-label buy"> Buy Amount:
                                 <CurrencyResult
                                     amount={amount}
                                     rate={rate}>
@@ -235,7 +235,7 @@ class Converter extends React.Component {
 
                         </Col>
                         <Col>
-                            <CancelTradeButton/>
+                            <CancelTradeButton></CancelTradeButton>
                         </Col>
                     </Row>
                 </Container>

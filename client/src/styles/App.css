@@ -20,6 +20,18 @@
     color: #09d3ac;
 }
 
-.main{
-    overflow: visible;
+
+.sales-label{
+    position: relative;
+    padding-top: 100px;
+}
+
+.cancel-trade {
+    position: relative;
+    top: 100px;
+}
+
+.div-inline{
+    position: relative;
+    top: 100px;
 }
